@@ -131,7 +131,7 @@ namespace GemeloDigital
                 Point point1 = SimulatorCore.AsPoint(p1);
                 Point point2 = SimulatorCore.AsPoint(p2);
 
-                Facility facilityTemporal = SimulatorCore.CreateFacility(point1,point2);
+                Facility facilityTemporal = SimulatorCore.CreateFacility(point1,point2); // CAMBIAR , LEER CANTIDAD DE PUNTOS ENTRADAS/SALIDA, FOR, Y CREAR LISTA DE ENTRADA / SALIDA
 
                 fileLoad.Read(bytes);
                 facilityTemporal.Id = System.Text.Encoding.UTF8.GetString(bytes);
