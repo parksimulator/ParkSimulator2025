@@ -196,4 +196,4 @@ namespace GemeloDigital
         //FileStream fileLoad = new FileStream(fichero, FileMode.Open, FileAccess.Read);
     }
 }
-}
+
