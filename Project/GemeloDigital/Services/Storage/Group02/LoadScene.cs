@@ -11,7 +11,6 @@ namespace GemeloDigital
     {
         internal override void LoadScene(string storageId)
         {
-
             Console.WriteLine("Storage02: Load simulation" + storageId + ".sb");
 
             if (!File.Exists($"saves/{storageId}.sb"))
