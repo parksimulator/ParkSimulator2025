@@ -14,39 +14,34 @@ namespace GemeloDigital
 
             Console.WriteLine("Storage02: Load simulation" + storageId + ".sb");
 
-            if (!File.Exists($"saves/{storageId}"))
+            if (!File.Exists($"saves/{storageId}.sb"))
             {
                 Console.WriteLine($"La escena {storageId} no existe");
                 Console.ReadLine();
                 return;
             }
 
-            FileStream fileLoad = new FileStream("saves/" + storageId + ".sb", FileMode.Open, FileAccess.Read);  // point - facility-pat-person
-
-
-            int countObject = 0; // Tamaño del bloque del objeto
+            FileStream fileLoad = new FileStream("saves/" + storageId + ".sb", FileMode.Open, FileAccess.Read);
 
             bytes = new byte[sizeof(int)];
-            fileLoad.Read(bytes); // se acaba el fichero
-            countObject = BitConverter.ToInt32(bytes); // Bloque 1 : points
+            fileLoad.Read(bytes); 
+            int countPoint = BitConverter.ToInt32(bytes); 
 
-            for (int i = 0; i < countObject; i++)
+            for (int i = 0; i < countPoint; i++)
             {
-                //guid + longitud nombre + nombre + x + y+ z
-                // fichaTemporal
-
-                Point pointTemporal = SimulatorCore.CreatePoint(); // en el momento que hago esta variable, es el enlace a meter las cosas en el simulatorCore.
+                Point pointTemporal = SimulatorCore.CreatePoint(); 
                 var posTemporal = pointTemporal.Position;
 
                 bytes = new byte[16];
-                pointTemporal.Id = fileLoad.Read(bytes).ToString(); // funsiona siuhhh
+                fileLoad.Read(bytes);
+                pointTemporal.Id = new Guid(bytes).ToString();
 
                 bytes = new byte[sizeof(int)];
                 fileLoad.Read(bytes);
-                int sizeName = BitConverter.ToInt32(bytes); // tamaño
+                int longitudName = BitConverter.ToInt32(bytes);
 
-                bytes = new byte[sizeName]; // sizeName
-                fileLoad.Read(bytes); // name
+                bytes = new byte[longitudName]; 
+                fileLoad.Read(bytes); 
                 pointTemporal.Name = System.Text.Encoding.UTF8.GetString(bytes);
 
                 bytes = new byte[sizeof(float)];
@@ -65,20 +60,19 @@ namespace GemeloDigital
             }
 
             fileLoad.Read(bytes);
-            countObject = BitConverter.ToInt32(bytes); // Bloque 2 : path gui1,guid2, id camino, longitud, nombre, capacity,distancia
+            int countPath = BitConverter.ToInt32(bytes); 
 
-            for (int i = 0; i < countObject; i++)
+            for (int i = 0; i < countPath; i++)
             {
                 string pointID1;
                 string pointID2;
                 int longitudName;
 
-                // leer point1 y leer point2
                 bytes = new byte[16];
                 fileLoad.Read(bytes);
-                pointID1 = System.Text.Encoding.UTF8.GetString(bytes);
+                pointID1 = new Guid(bytes).ToString();
                 fileLoad.Read(bytes);
-                pointID2 = System.Text.Encoding.UTF8.GetString(bytes);
+                pointID2 = new Guid(bytes).ToString();
 
                 SimulatedObject p1 = SimulatorCore.FindObjectById(pointID1.ToString());
                 SimulatedObject p2 = SimulatorCore.FindObjectById(pointID2.ToString());
@@ -86,114 +80,162 @@ namespace GemeloDigital
                 Point point1 = SimulatorCore.AsPoint(p1);
                 Point point2 = SimulatorCore.AsPoint(p2);
 
-                Path pathTemporal = SimulatorCore.CreatePath(point1,point2);
+                Path pathTemporal = SimulatorCore.CreatePath(point1, point2);
 
                 fileLoad.Read(bytes);
-                pathTemporal.Id = System.Text.Encoding.UTF8.GetString(bytes);
-
+                pathTemporal.Id = new Guid(bytes).ToString();
 
                 bytes = new byte[sizeof(int)];
                 fileLoad.Read(bytes);
                 longitudName = BitConverter.ToInt32(bytes);
-               
-                bytes = BitConverter.GetBytes(longitudName);
+
+                bytes = new byte[longitudName];
                 fileLoad.Read(bytes);
-                pathTemporal.Name = System.BitConverter.ToString(bytes);
+                pathTemporal.Name = System.Text.Encoding.UTF8.GetString(bytes);
 
                 bytes = new byte[sizeof(int)];
                 fileLoad.Read(bytes);
                 pathTemporal.CapacityPersons = BitConverter.ToInt32(bytes);
-
-                // distancia
-
-
             }
 
             fileLoad.Read(bytes);
-            countObject = BitConverter.ToInt32(bytes); // Bloque 3 : facility // Punto1, Punto 2, CreateFacility, id;longitud, Name, PowerConsumed
+            int countFacility = BitConverter.ToInt32(bytes); 
 
-            for (int i = 0; i < countObject; i++)
+            for (int i = 0; i < countFacility; i++)
             {
-                string pointID1;
-                string pointID2;
                 int longitudName;
+                int cantidadEntradas;
+                int cantidadSalidas;
+                List<Point> listaEntradas = new List<Point>();
+                List<Point> listaSalidas = new List<Point>();
 
-                // leer point1 y leer point2
-                bytes = new byte[16];
+                bytes = new byte[sizeof(int)];
                 fileLoad.Read(bytes);
-                pointID1 = System.Text.Encoding.UTF8.GetString(bytes);
+                cantidadEntradas = BitConverter.ToInt32(bytes);
+
+                for (int e = 0; e < cantidadEntradas; e++)
+                {
+                    bytes = new byte[16]; // leemos ID
+                    fileLoad.Read(bytes);
+                    string idTemporal = new Guid(bytes).ToString();
+                    SimulatedObject objetoReferencia = SimulatorCore.FindObjectById(idTemporal);
+                    Point puntoTemporal = SimulatorCore.AsPoint(objetoReferencia);
+                    listaEntradas.Add(puntoTemporal);
+                }
+
+                bytes = new byte[sizeof(int)];
                 fileLoad.Read(bytes);
-                pointID2 = System.Text.Encoding.UTF8.GetString(bytes);
+                cantidadSalidas = BitConverter.ToInt32(bytes);
 
-                SimulatedObject p1 = SimulatorCore.FindObjectById(pointID1.ToString());
-                SimulatedObject p2 = SimulatorCore.FindObjectById(pointID2.ToString());
+                for (int s = 0; s < cantidadSalidas; s++)
+                {
+                    bytes = new byte[16]; 
+                    fileLoad.Read(bytes);
+                    string idTemporal = new Guid(bytes).ToString();
+                    SimulatedObject objetoReferencia = SimulatorCore.FindObjectById(idTemporal);
+                    Point puntoTemporal = SimulatorCore.AsPoint(objetoReferencia);
+                    listaSalidas.Add(puntoTemporal);
+                }
 
-                Point point1 = SimulatorCore.AsPoint(p1);
-                Point point2 = SimulatorCore.AsPoint(p2);
+                Facility facilityTemporal = SimulatorCore.CreateFacility(listaEntradas[0], listaSalidas[0]); 
 
-                Facility facilityTemporal = SimulatorCore.CreateFacility(point1,point2); // CAMBIAR , LEER CANTIDAD DE PUNTOS ENTRADAS/SALIDA, FOR, Y CREAR LISTA DE ENTRADA / SALIDA
+                for (int e = 1; e < listaEntradas.Count; e++)
+                {
+                    facilityTemporal.Entrances.Add(listaEntradas[e]);
+                }
+                for (int s = 1; s < listaSalidas.Count; s++)
+                {
+                    facilityTemporal.Exits.Add(listaSalidas[s]);
+                }
 
                 fileLoad.Read(bytes);
-                facilityTemporal.Id = System.Text.Encoding.UTF8.GetString(bytes);
+                facilityTemporal.Id = new Guid(bytes).ToString();
 
                 bytes = new byte[sizeof(int)];
                 fileLoad.Read(bytes);
                 longitudName = BitConverter.ToInt32(bytes);
 
-                bytes = BitConverter.GetBytes(longitudName);
+                bytes = new byte[longitudName];
                 fileLoad.Read(bytes);
-                facilityTemporal.Name = System.BitConverter.ToString(bytes);
+                facilityTemporal.Name = System.Text.Encoding.UTF8.GetString(bytes);
 
                 bytes = new byte[sizeof(float)];
                 fileLoad.Read(bytes);
-                facilityTemporal.PowerConsumed = BitConverter.ToSingle(bytes); // si que hay que cargar, get y set,  si solo pone get solo es lecutra
-
-         
-
+                facilityTemporal.PowerConsumed = BitConverter.ToSingle(bytes); 
             }
 
             fileLoad.Read(bytes);
-            countObject = BitConverter.ToInt32(bytes); // Bloque 4 : person
+            int countPerson = BitConverter.ToInt32(bytes); 
 
-            for (int i = 0; i < countObject; i++)
+            for (int i = 0; i < countPerson; i++)
             {
-                SimulatorCore.CreatePerson();
+                Person personTemporal = SimulatorCore.CreatePerson();
+
+                bytes = new byte[16];
+                fileLoad.Read(bytes);
+                personTemporal.Id = new Guid(bytes).ToString();
+
+                bytes = new byte[sizeof(int)];
+                fileLoad.Read(bytes);
+                int longitudNombre = BitConverter.ToInt32(bytes);
+
+                bytes = new byte[longitudNombre];
+                fileLoad.Read(bytes);
+                personTemporal.Name = System.Text.Encoding.UTF8.GetString(bytes);
+
+                bytes = new byte[sizeof(int)];
+                fileLoad.Read(bytes);
+                personTemporal.Age = BitConverter.ToInt32(bytes);
+
+                bytes = new byte[sizeof(float)];
+                fileLoad.Read(bytes);
+                personTemporal.Height = BitConverter.ToSingle(bytes);
+
+                bytes = new byte[sizeof(float)];
+                fileLoad.Read(bytes);
+                personTemporal.Weight = BitConverter.ToSingle(bytes);
+
+                bytes = new byte[sizeof(int)];
+                fileLoad.Read(bytes);
+                personTemporal.Money = BitConverter.ToInt32(bytes);
+
+                string idFacility;
+                bytes = new byte[16];
+                fileLoad.Read(bytes);
+                Guid facilityGuid = new Guid(bytes);
+
+                if (facilityGuid != Guid.Empty)
+                {
+                    SimulatedObject objetoReferencia = SimulatorCore.FindObjectById(facilityGuid.ToString());
+                    Facility facilityTemporal = SimulatorCore.AsFacility(objetoReferencia);
+                    personTemporal.IsAtFacility = facilityTemporal;
+                }
+                else
+                {
+                    personTemporal.IsAtFacility = null;
+                }
+
+                string idPath;
+                bytes = new byte[16];
+                fileLoad.Read(bytes);
+                Guid pathGuid = new Guid(bytes);
+
+                if (pathGuid != Guid.Empty)
+                {
+                    SimulatedObject objetoReferencia = SimulatorCore.FindObjectById(pathGuid.ToString());
+                    Path pathTemporal = SimulatorCore.AsPath(objetoReferencia);
+                    personTemporal.IsAtPath = pathTemporal;
+                }
+                else
+                {
+                    personTemporal.IsAtPath = null;
+                }
             }
 
             fileLoad.Close();
-            // Point tiene posicion X posicion Y y posicion Z, lee 3 floats // Guardar las cosas en la lista de puntos
-
-
-
-            // Crear punto 
-
-
-
-
-            // add.Lista(punto) // simulatedObjects.add(point)
-
-
-
-
-
-            // Facility
-
-
 
         }
 
-
-
-
-        //foreach(var escena in listaEscena)
-        //{
-        //    Console.WriteLine("Escribe el nombre del fichero"); 
-        //    Console.WriteLine($"Escena {escena}");
-
-        //    string fichero = Console.ReadLine();
-        //}
-
-        //FileStream fileLoad = new FileStream(fichero, FileMode.Open, FileAccess.Read);
     }
 }
 
