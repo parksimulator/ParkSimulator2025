@@ -22,9 +22,7 @@ namespace GemeloDigital
 
             FileStream fileLoad = new FileStream("saves/" + storageId + ".sb", FileMode.Open, FileAccess.Read);
 
-            bytes = new byte[sizeof(int)];
-            fileLoad.Read(bytes); 
-            int countPoint = BitConverter.ToInt32(bytes); 
+            int countPoint = ReadCount(fileLoad); 
 
             for (int i = 0; i < countPoint; i++)
             {
@@ -58,8 +56,7 @@ namespace GemeloDigital
 
             }
 
-            fileLoad.Read(bytes);
-            int countPath = BitConverter.ToInt32(bytes); 
+            int countPath = ReadCount(fileLoad); 
 
             for (int i = 0; i < countPath; i++)
             {
@@ -97,8 +94,7 @@ namespace GemeloDigital
                 pathTemporal.CapacityPersons = BitConverter.ToInt32(bytes);
             }
 
-            fileLoad.Read(bytes);
-            int countFacility = BitConverter.ToInt32(bytes); 
+            int countFacility = ReadCount(fileLoad); 
 
             for (int i = 0; i < countFacility; i++)
             {
@@ -163,8 +159,7 @@ namespace GemeloDigital
                 facilityTemporal.PowerConsumed = BitConverter.ToSingle(bytes); 
             }
 
-            fileLoad.Read(bytes);
-            int countPerson = BitConverter.ToInt32(bytes); 
+            int countPerson = ReadCount(fileLoad);
 
             for (int i = 0; i < countPerson; i++)
             {
@@ -233,6 +228,12 @@ namespace GemeloDigital
 
             fileLoad.Close();
 
+        }
+        private int ReadCount(FileStream fileLoad)
+        {
+            bytes = new byte[sizeof(int)];
+            fileLoad.Read(bytes);
+            return BitConverter.ToInt32(bytes);
         }
 
     }
