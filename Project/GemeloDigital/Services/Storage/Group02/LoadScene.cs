@@ -53,6 +53,7 @@ namespace GemeloDigital
                 fileLoad.Read(bytes);
                 posTemporal.Z = BitConverter.ToSingle(bytes);
 
+                pointTemporal.Position = posTemporal;
 
             }
 
@@ -110,7 +111,7 @@ namespace GemeloDigital
 
                 for (int e = 0; e < cantidadEntradas; e++)
                 {
-                    bytes = new byte[16]; // leemos ID
+                    bytes = new byte[16]; 
                     fileLoad.Read(bytes);
                     string idTemporal = new Guid(bytes).ToString();
                     SimulatedObject objetoReferencia = SimulatorCore.FindObjectById(idTemporal);
@@ -193,7 +194,6 @@ namespace GemeloDigital
                 fileLoad.Read(bytes);
                 personTemporal.Money = BitConverter.ToInt32(bytes);
 
-                string idFacility;
                 bytes = new byte[16];
                 fileLoad.Read(bytes);
                 Guid facilityGuid = new Guid(bytes);
@@ -209,7 +209,6 @@ namespace GemeloDigital
                     personTemporal.IsAtFacility = null;
                 }
 
-                string idPath;
                 bytes = new byte[16];
                 fileLoad.Read(bytes);
                 Guid pathGuid = new Guid(bytes);
