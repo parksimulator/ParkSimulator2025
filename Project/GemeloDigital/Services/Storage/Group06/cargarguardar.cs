@@ -10,6 +10,38 @@
 //    {
 //        List<string> list = new List<string>();
 
+//        internal override void Initialize()
+//        {
+//            list = new List<string>();
+//            string currentFolder = Directory.GetCurrentDirectory();
+//            string[] files = Directory.GetFiles(currentFolder, "*.dat");
+
+//            foreach (string file in files)
+//            {
+//                string cleanName = System.IO.Path.GetFileNameWithoutExtension(file);
+//                list.Add(cleanName);
+//            }
+
+//            Console.WriteLine("Sistema de guardado inicializado." + list.Count + "escenas encontradas.");
+//        }
+
+//        internal override void Finish()
+//        {
+//            Console.WriteLine("DummyStorage: Finish");
+//        }
+
+        
+//        private string GetCorrectFilename(string storageId)
+//        {
+//            if (storageId.EndsWith(".dat", StringComparison.OrdinalIgnoreCase))
+//            {
+//                return storageId;
+//            }
+//            return storageId + ".dat";
+//        }
+
+        
+
 //        internal override void SaveScene(string storageId)
 //        {
 //            Console.WriteLine("Grupo 6: Save simulation " + storageId);
@@ -74,6 +106,76 @@
 //                    fichero.Write(pid, 0, pid.Length);
 //                }
 //            }
+//            // Guardar Paths
+//            bytes = BitConverter.GetBytes(paths.Count);
+//            fichero.Write(bytes, 0, bytes.Length);
+//            foreach (var pa in paths)
+//            {
+//                byte[] idBytes = Encoding.UTF8.GetBytes(pa.Id);
+//                fichero.Write(BitConverter.GetBytes(idBytes.Length), 0, sizeof(int));
+//                fichero.Write(idBytes, 0, idBytes.Length);
+//                byte[] nameBytes = Encoding.UTF8.GetBytes(pa.Name);
+//                fichero.Write(BitConverter.GetBytes(nameBytes.Length), 0, sizeof(int));
+//                fichero.Write(nameBytes, 0, nameBytes.Length);
+//                byte[] p1 = Encoding.UTF8.GetBytes(pa.Point1.Id);
+//                fichero.Write(BitConverter.GetBytes(p1.Length), 0, sizeof(int));
+//                fichero.Write(p1, 0, p1.Length);
+//                byte[] p2 = Encoding.UTF8.GetBytes(pa.Point2.Id);
+//                fichero.Write(BitConverter.GetBytes(p2.Length), 0, sizeof(int));
+//                fichero.Write(p2, 0, p2.Length);
+//                fichero.Write(BitConverter.GetBytes(pa.CapacityPersons), 0, sizeof(int));
+//            }
+//            // Guardar Persons
+//            bytes = BitConverter.GetBytes(persons.Count);
+//            fichero.Write(bytes, 0, bytes.Length);
+//            foreach (var p in persons)
+//            {
+//                byte[] idBytes = Encoding.UTF8.GetBytes(p.Id);
+//                fichero.Write(BitConverter.GetBytes(idBytes.Length), 0, sizeof(int));
+//                fichero.Write(idBytes, 0, idBytes.Length);
+//                byte[] nameBytes = Encoding.UTF8.GetBytes(p.Name);
+//                fichero.Write(BitConverter.GetBytes(nameBytes.Length), 0, sizeof(int));
+//                fichero.Write(nameBytes, 0, nameBytes.Length);
+//                fichero.Write(BitConverter.GetBytes(p.Age), 0, sizeof(int));
+//                fichero.Write(BitConverter.GetBytes(p.Height), 0, sizeof(float));
+//                fichero.Write(BitConverter.GetBytes(p.Weight), 0, sizeof(float));
+//                fichero.Write(BitConverter.GetBytes(p.Money), 0, sizeof(float));
+//                string fid = (p.IsAtFacility != null) ? p.IsAtFacility.Id : ""; byte[] fBytes = Encoding.UTF8.GetBytes(fid);
+//                fichero.Write(BitConverter.GetBytes(fBytes.Length), 0, sizeof(int));
+//                if (fBytes.Length > 0) fichero.Write(fBytes, 0, fBytes.Length);
+//                string pid = (p.IsAtPath != null) ? p.IsAtPath.Id : ""; byte[] pBytes = Encoding.UTF8.GetBytes(pid);
+//                fichero.Write(BitConverter.GetBytes(pBytes.Length), 0, sizeof(int));
+//                if (pBytes.Length > 0) fichero.Write(pBytes, 0, pBytes.Length);
+//            }
+
+//            fichero.Close();
+
+//            // Actualizamos la lista
+//            string cleanName = storageId;
+//            if (storageId.EndsWith(".dat")) cleanName = storageId.Substring(0, storageId.Length - 4);
+
+//            if (!list.Contains(cleanName))
+//            {
+//                list.Add(cleanName);
+//            }
+
+//            Console.WriteLine("Escena guardada correctamente");
+//        }
+
+//        internal override void DeleteScene(string storageId)
+//        {
+//            Console.WriteLine("Deleting simulation " + storageId);
+//            list.Remove(storageId);
+//            string filename = GetCorrectFilename(storageId);
+//            if (File.Exists(filename))
+//            {
+//                File.Delete(filename);
+//            }
+//        }
+
+//        internal override List<string> ListScenes()
+//        {
+//            return list;
 //        }
 //    }
 //}
