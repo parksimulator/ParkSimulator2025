@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
@@ -106,13 +107,9 @@ namespace GemeloDigital
 
             for (int i = 0; i < pointList.Count; i++)
             {
-                
-
                 writer.WriteLine("ID: " + pointList[i].Id);
                 writer.WriteLine("Nombre: " + pointList[i].Name);
-
-                writer.WriteLine("Coordenadas: " + pointList[i].Position.X + ", " + pointList[i].Position.Y + ", " + pointList[i].Position.Z);
-
+                writer.WriteLine("Coordenada: " + pointList[i].Position.X + ", " + pointList[i].Position.Y + ", " + pointList[i].Position.Z);
             }
 
             writer.WriteLine("\n--- Caminos ---");
@@ -122,35 +119,31 @@ namespace GemeloDigital
                 writer.WriteLine("ID: " + pathList[i].Id);
                 writer.WriteLine("Camino: " + pathList[i].Name);
                 writer.WriteLine("Id Punto1: " + pathList[i].Point1.Id);
-                writer.WriteLine("Punto1: " + pathList[i].Point1);
-                writer.WriteLine("Id Punto2: " + pathList[i].Point1.Id);
-                writer.WriteLine("Punto2: " + pathList[i].Point2);
-
+                writer.WriteLine("Id Punto2: " + pathList[i].Point2.Id);
             }
 
             writer.WriteLine("\n--- Instalaciones ---");
-
-
-           
-
 
             for (int i = 0; i < facilitiesList.Count; i++)
             {
                 writer.WriteLine("ID: " + facilitiesList[i].Id);
                 writer.WriteLine("Instalción: " + facilitiesList[i].Name);
 
-                string exitsString = "";
-                bool first = true;
-                // for sobre las exits
-                {
-                    exitsString = exitsString + (first ? "" : ",") + id;
-                    first = false;
-                }
+                string pointsEntrances = "";
+                string pointsExits     = "";
 
-                string 
-
-                writer.WriteLine("Entrada: " + exitsString);
-  
+                
+                    foreach (Point point in facilitiesList[i].Entrances)
+                    {
+                        pointsEntrances += " " + point.Id;
+                    }
+                    foreach (Point point in facilitiesList[i].Exits)
+                    {
+                        pointsExits += " " + point.Id;
+                    }
+                
+                writer.WriteLine("Entrada: " + pointsEntrances);
+                writer.WriteLine("Entrada: " + pointsExits);
                 writer.WriteLine("Consumen: " + facilitiesList[i].PowerConsumed);
             }
 
