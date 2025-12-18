@@ -785,8 +785,7 @@ namespace GemeloDigital
             stream.Close();
 
             // eliminamos los archivos asociados a la escena eliminada siguiendo el mismo patrón de nombre
-            
-            File.Delete(storageId);
+                        
             File.Delete(storageId + "points.dat");
             File.Delete(storageId + "persons.dat");
             File.Delete(storageId + "facilities.dat");
