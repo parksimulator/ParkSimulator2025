@@ -208,20 +208,28 @@ namespace GemeloDigital
 
         internal override List<string> ListScenes()
         {
+
+            string direc = Directory.GetCurrentDirectory();
+            string[] list = Directory.GetDirectories(direc);
+
             List<string> result = new List<string>();
 
-            string source = @"\ParkSimulator2025\\Project\\TextFrontend\\bin\\Debug\\net8.0";
+            for (int i = 0; i < list.Length; i++) 
+            {
+                result.Add(list[i]);
+            }
 
+            /*
             try
             {
-                var textFile = Directory.GetFiles(source);
+                var textFile = Directory.GetFiles();
             
             }
             catch { }
             string[] partes = nombreEscena.Split(".");
             string escena = partes[1];
             result.Add(escena);
-
+            */
             return result; 
         }
     }
