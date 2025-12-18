@@ -297,71 +297,71 @@ namespace GemeloDigital
             {
                 byte[] idBytes = Encoding.UTF8.GetBytes(po.Id);
                 fichero.Write(BitConverter.GetBytes(idBytes.Length));
-                fichero.Write(idBytes, 0, idBytes.Length);
+                fichero.Write(idBytes);
                 byte[] nameBytes = Encoding.UTF8.GetBytes(po.Name);
                 fichero.Write(BitConverter.GetBytes(nameBytes.Length));
-                fichero.Write(nameBytes, 0, nameBytes.Length);
+                fichero.Write(nameBytes);
                 fichero.Write(BitConverter.GetBytes(po.Position.X));
                 fichero.Write(BitConverter.GetBytes(po.Position.Y));
                 fichero.Write(BitConverter.GetBytes(po.Position.Z));
             }
             // Guardar Facilities
             bytes = BitConverter.GetBytes(facilities.Count);
-            fichero.Write(bytes, 0, bytes.Length);
+            fichero.Write(bytes);
             foreach (var f in facilities)
             {
                 byte[] idBytes = Encoding.UTF8.GetBytes(f.Id);
                 fichero.Write(BitConverter.GetBytes(idBytes.Length));
-                fichero.Write(idBytes, 0, idBytes.Length);
+                fichero.Write(idBytes);
                 byte[] nameBytes = Encoding.UTF8.GetBytes(f.Name);
                 fichero.Write(BitConverter.GetBytes(nameBytes.Length));
-                fichero.Write(nameBytes, 0, nameBytes.Length);
+                fichero.Write(nameBytes);
                 fichero.Write(BitConverter.GetBytes(f.PowerConsumed));
                 fichero.Write(BitConverter.GetBytes(f.Entrances.Count));
                 foreach (var ent in f.Entrances)
                 {
                     byte[] pid = Encoding.UTF8.GetBytes(ent.Id);
                     fichero.Write(BitConverter.GetBytes(pid.Length));
-                    fichero.Write(pid, 0, pid.Length);
+                    fichero.Write(pid);
                 }
                 fichero.Write(BitConverter.GetBytes(f.Exits.Count));
                 foreach (var ext in f.Exits)
                 {
                     byte[] pid = Encoding.UTF8.GetBytes(ext.Id);
                     fichero.Write(BitConverter.GetBytes(pid.Length));
-                    fichero.Write(pid, 0, pid.Length);
+                    fichero.Write(pid);
                 }
             }
             // Guardar Paths
             bytes = BitConverter.GetBytes(paths.Count);
-            fichero.Write(bytes, 0, bytes.Length);
+            fichero.Write(bytes);
             foreach (var pa in paths)
             {
                 byte[] idBytes = Encoding.UTF8.GetBytes(pa.Id);
                 fichero.Write(BitConverter.GetBytes(idBytes.Length));
-                fichero.Write(idBytes, 0, idBytes.Length);
+                fichero.Write(idBytes);
                 byte[] nameBytes = Encoding.UTF8.GetBytes(pa.Name);
                 fichero.Write(BitConverter.GetBytes(nameBytes.Length));
-                fichero.Write(nameBytes, 0, nameBytes.Length);
+                fichero.Write(nameBytes);
                 byte[] p1 = Encoding.UTF8.GetBytes(pa.Point1.Id);
                 fichero.Write(BitConverter.GetBytes(p1.Length));
-                fichero.Write(p1, 0, p1.Length);
+                fichero.Write(p1);
                 byte[] p2 = Encoding.UTF8.GetBytes(pa.Point2.Id);
                 fichero.Write(BitConverter.GetBytes(p2.Length));
-                fichero.Write(p2, 0, p2.Length);
+                fichero.Write(p2);
                 fichero.Write(BitConverter.GetBytes(pa.CapacityPersons));
             }
             // Guardar Persons
             bytes = BitConverter.GetBytes(persons.Count);
-            fichero.Write(bytes, 0, bytes.Length);
+            fichero.Write(bytes);
             foreach (var p in persons)
             {
                 byte[] idBytes = Encoding.UTF8.GetBytes(p.Id);
                 fichero.Write(BitConverter.GetBytes(idBytes.Length));
-                fichero.Write(idBytes, 0, idBytes.Length);
+                fichero.Write(idBytes);
                 byte[] nameBytes = Encoding.UTF8.GetBytes(p.Name);
                 fichero.Write(BitConverter.GetBytes(nameBytes.Length));
-                fichero.Write(nameBytes, 0, nameBytes.Length);
+                fichero.Write(nameBytes);
                 fichero.Write(BitConverter.GetBytes(p.Age));
                 fichero.Write(BitConverter.GetBytes(p.Height));
                 fichero.Write(BitConverter.GetBytes(p.Weight));
