@@ -17,19 +17,13 @@ namespace GemeloDigital
             // cundo ya tenemos varias esenas creandas se creara varios ficheros y aqui deve mostrar cuantas hay mas no mostrar lo de 
             //dentro ya que si quiero ver lo que existe dentro del fichero de texto tendre que ir a LoadScenes no aqui 
 
-            if (!Directory.Exists("saves"))
-            {
-                Directory.CreateDirectory("saves");
-            }
-
-            
+               
             string[] archivos = Directory.GetFiles("saves", "*.sb");
 
             List<string> nombresArchivos = new List<string>();
 
             foreach (string archivo in archivos)
             {
-                
                 string nombreArchivo = System.IO.Path.GetFileNameWithoutExtension(archivo);
                 nombresArchivos.Add(nombreArchivo);
             }
