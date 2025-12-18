@@ -5,7 +5,7 @@
 `BinaryFileStorage` es un sistema de almacenamiento binario diseñado para persistir y cargar escenas de simulación. Gestiona archivos binarios para diferentes tipos de objetos simulados: **Points**, **Facilities**, **Paths** y **Persons**. Genera un archivo por cada tipo de objeto, asociados a la escena
 a la que pertenecen.
 Además, tiene un único archivo llamado scenes.dat que gestiona las distintas escenas.
----
+
 
 ## Serialización de strings (UTF8)
 
