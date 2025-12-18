@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
@@ -14,8 +15,6 @@ namespace GemeloDigital
 {
     internal class G4Storage : Storage
     {
-        List<string> list = new List<string>();
-      
 
         public string nombreEscena;
         public string horaActual;
@@ -23,7 +22,6 @@ namespace GemeloDigital
         internal override void Initialize()
         {
            Console.WriteLine("G4Storage: Initializing");
-            list = new List<string>(); 
 
 
         }
@@ -37,14 +35,43 @@ namespace GemeloDigital
         {
             Console.WriteLine("G4Storge: Load simulation" + storageId);
 
+
+
+            FileStream file = new FileStream(nombreEscena, FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(file, Encoding.UTF8);
+
+            //Listas
+            List<Point> listPoint = new List<Point>();
+            List<Path> listPath = new List<Path>();
+            List<Facility> listFacility = new List<Facility>();
+            List<Person> listPerson = new List<Person>();
             
+            // Variables
+            string line;
+
+            line = reader.ReadLine();
+            while (line != " *** FIN *** ")
+            {
+                string[] parte = line.Split(": ");
+                //saltos de linea
+
+                bool skip = false;
+                if (line.Trim().Length == 0) { skip = true; }
+
+                else if (line.Trim().Length > 2)
+                {
+                     string apartado = line.Trim('-', ' ');
+                }
+                line =  reader.ReadLine();
+            }
+ 
         }
 
         internal override void SaveScene(string storageId)
         {
             Console.WriteLine("G4Storge: Save simulation " + storageId);
 
-            nombreEscena = storageId;
+            nombreEscena = storageId + ".txt";
 
             FileStream file = new FileStream(nombreEscena, FileMode.Create, FileAccess.Write);
             StreamWriter writer = new StreamWriter(file, Encoding.UTF8);
@@ -112,6 +139,8 @@ namespace GemeloDigital
                 writer.WriteLine("Coordenada: " + pointList[i].Position.X + ", " + pointList[i].Position.Y + ", " + pointList[i].Position.Z);
             }
 
+            writer.WriteLine("FIN PUNTOS");
+
             writer.WriteLine("\n--- Caminos ---");
 
             for (int i = 0; i < pathList.Count; i++)
@@ -121,6 +150,8 @@ namespace GemeloDigital
                 writer.WriteLine("Id Punto1: " + pathList[i].Point1.Id);
                 writer.WriteLine("Id Punto2: " + pathList[i].Point2.Id);
             }
+
+            writer.WriteLine("FIN CAMINOS");
 
             writer.WriteLine("\n--- Instalaciones ---");
 
@@ -132,7 +163,7 @@ namespace GemeloDigital
                 string pointsEntrances = "";
                 string pointsExits     = "";
 
-                
+                // Creamos un punto y lo recorremos dependiendo a las entradas que hay y guardamos el ID
                     foreach (Point point in facilitiesList[i].Entrances)
                     {
                         pointsEntrances += " " + point.Id;
@@ -146,6 +177,8 @@ namespace GemeloDigital
                 writer.WriteLine("Entrada: " + pointsExits);
                 writer.WriteLine("Consumen: " + facilitiesList[i].PowerConsumed);
             }
+            writer.WriteLine("FIN INSTALACIONES");
+
 
             writer.WriteLine("\n --- Personas ---");
 
@@ -159,21 +192,37 @@ namespace GemeloDigital
                 writer.WriteLine("Dinero: " + personList[i].Money);
             }
 
+            writer.WriteLine("FIN PERSONAS");
             writer.WriteLine("\n *** FIN *** ");
 
             writer.Close();
             file.Close();
+
+            
         }
         
         internal override void DeleteScene(string storageId)
         {
             //Console.WriteLine("Deleting simulation " + storageId);
-           
         }
 
         internal override List<string> ListScenes()
         {
-            return list; list = new List<string>();
+            List<string> result = new List<string>();
+
+            string source = @"\ParkSimulator2025\\Project\\TextFrontend\\bin\\Debug\\net8.0";
+
+            try
+            {
+                var textFile = Directory.GetFiles(source);
+            
+            }
+            catch { }
+            string[] partes = nombreEscena.Split(".");
+            string escena = partes[1];
+            result.Add(escena);
+
+            return result; 
         }
     }
 }
