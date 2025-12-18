@@ -33,6 +33,8 @@ namespace GemeloDigital
         }
         internal override void LoadScene(string storageId)
         {
+
+
             List<Path> paths = new List<Path>();
             List<Point> points = new List<Point>();
             List<Facility> facilities = new List<Facility>();
@@ -42,108 +44,140 @@ namespace GemeloDigital
 
             byte[] bytes = new byte[sizeof(int)];
 
-            fichero.Read(bytes);
-            int cantidadDeLetras = BitConverter.ToInt32(bytes);
+            int vueltasPersonas = BitConverter.ToInt32(bytes);
 
-            bytes = new byte[cantidadDeLetras];
-            fichero.Read(bytes);
-            string nombre = Encoding.ASCII.GetString(bytes);
-
-            bytes = new byte[sizeof(int)];
-            fichero.Read(bytes);
-            int age = BitConverter.ToInt32(bytes);
-
-            bytes = new byte[sizeof(float)];
-            fichero.Read(bytes);
-            float height = BitConverter.ToSingle(bytes);
-
-            fichero.Read(bytes);
-            float weight = BitConverter.ToSingle(bytes);
-
-            bytes = new byte[sizeof(bool)];
-            fichero.Read(bytes);
-            bool isAtFacility = BitConverter.ToBoolean(bytes);
-            string idFacility;
-
-            if (isAtFacility) {
-                bytes = new byte[sizeof(int)];
-                fichero.Read(bytes);
-                int letrasCant = BitConverter.ToInt32(bytes);
-
-                bytes = new byte[letrasCant];
-                fichero.Read(bytes);
-                idFacility = Encoding.ASCII.GetString(bytes);
-            }
-
-            bytes = new byte[sizeof(bool)];
-            fichero.Read(bytes);
-            bool isAtPath = BitConverter.ToBoolean(bytes);
-            string idPath;
-
-            if (isAtPath)
+            for (int o = 0; o < vueltasPersonas; o++)
             {
+
+                fichero.Read(bytes);
+                int cantidadDeLetras = BitConverter.ToInt32(bytes);
+
+                bytes = new byte[cantidadDeLetras];
+                fichero.Read(bytes);
+                string nombre = Encoding.ASCII.GetString(bytes);
+
                 bytes = new byte[sizeof(int)];
                 fichero.Read(bytes);
-                int letrasCant = BitConverter.ToInt32(bytes);
+                int age = BitConverter.ToInt32(bytes);
 
-                bytes = new byte[letrasCant];
+                bytes = new byte[sizeof(float)];
                 fichero.Read(bytes);
-                idPath = Encoding.ASCII.GetString(bytes);
+                float height = BitConverter.ToSingle(bytes);
+
+                fichero.Read(bytes);
+                float weight = BitConverter.ToSingle(bytes);
+
+                bytes = new byte[sizeof(bool)];
+                fichero.Read(bytes);
+                bool isAtFacility = BitConverter.ToBoolean(bytes);
+                string? idFacility = null;
+
+                if (isAtFacility)
+                {
+                    bytes = new byte[sizeof(int)];
+                    fichero.Read(bytes);
+                    int letrasCant = BitConverter.ToInt32(bytes);
+
+                    bytes = new byte[letrasCant];
+                    fichero.Read(bytes);
+                    idFacility = Encoding.ASCII.GetString(bytes);
+                }
+
+                bytes = new byte[sizeof(bool)];
+                fichero.Read(bytes);
+                bool isAtPath = BitConverter.ToBoolean(bytes);
+                string? idPath = null;
+
+                if (isAtPath)
+                {
+                    bytes = new byte[sizeof(int)];
+                    fichero.Read(bytes);
+                    int letrasCant = BitConverter.ToInt32(bytes);
+
+                    bytes = new byte[letrasCant];
+                    fichero.Read(bytes);
+                    idPath = Encoding.ASCII.GetString(bytes);
+                }
+
+                bytes = new byte[sizeof(float)];
+                fichero.Read(bytes);
+                float money = BitConverter.ToSingle(bytes);
+
+                bytes = new byte[sizeof(int)];
+                fichero.Read(bytes);
+                int length = BitConverter.ToInt32(bytes);
+
+                fichero.Read(bytes);
+                int cantLetras = BitConverter.ToInt32(bytes);
+
+                bytes = new byte[cantLetras];
+                fichero.Read(bytes);
+                string idPersona = Encoding.ASCII.GetString(bytes);
+
+                fichero.Close();
+
+                Person temp = SimulatorCore.CreatePersonWithId(idPersona);
+                temp.Name = nombre;
+                temp.Age = age;
+                temp.Height = height;
+                temp.Weight = weight;
+                temp.IsAtFacility.Id = idFacility;
+                temp.IsAtPath.Id = idPath;
+                temp.Money = money;
+
+                persons.Add(temp);
             }
-
-            bytes = new byte[sizeof(float)];
-            fichero.Read(bytes);
-            float money = BitConverter.ToSingle(bytes);
-
-            bytes = new byte[sizeof(int)];
-            fichero.Read(bytes);
-            int length = BitConverter.ToInt32(bytes);
-
-            fichero.Read(bytes);
-            int cantLetras = BitConverter.ToInt32(bytes);
-
-            bytes = new byte[cantLetras];
-            fichero.Read(bytes);
-            string idPersona = Encoding.ASCII.GetString(bytes);
-
-            fichero.Close();
 
             fichero = new FileStream(storageId + "\\Puntos", FileMode.Create, FileAccess.Write);
 
             bytes = new byte[sizeof(int)];
             fichero.Read(bytes);
-            int vueltasPaths = BitConverter.ToInt32(bytes);
-            
-            // CONTINUAR HACIENDO LOS FORS 
+            int vueltasPuntos = BitConverter.ToInt32(bytes);
 
-            fichero.Read(bytes);
-            int cantLetrasNombrePuntos = BitConverter.ToInt32(bytes);
+            for (int o = 0; o < vueltasPuntos; o++)
+            {
 
-            bytes = new byte[cantLetrasNombrePuntos];
-            fichero.Read(bytes);
-            string nombrePuntos = BitConverter.ToString(bytes);
+                fichero.Read(bytes);
+                int cantLetrasNombrePuntos = BitConverter.ToInt32(bytes);
 
-            bytes = new byte[sizeof(int)];
-            fichero.Read(bytes);
-            int cantLetrasIdPuntos = BitConverter.ToInt32(bytes);
+                bytes = new byte[cantLetrasNombrePuntos];
+                fichero.Read(bytes);
+                string nombrePuntos = BitConverter.ToString(bytes);
 
-            bytes = new byte[cantLetrasNombrePuntos];
-            fichero.Read(bytes);
-            string idPuntos = BitConverter.ToString(bytes);
+                bytes = new byte[sizeof(int)];
+                fichero.Read(bytes);
+                int cantLetrasIdPuntos = BitConverter.ToInt32(bytes);
 
-            bytes = new byte[sizeof(float)];
-            fichero.Read(bytes);
-            float posX = BitConverter.ToSingle(bytes);
+                bytes = new byte[cantLetrasNombrePuntos];
+                fichero.Read(bytes);
+                string idPuntos = BitConverter.ToString(bytes);
 
-            bytes = new byte[sizeof(float)];
-            fichero.Read(bytes);
-            float posY = BitConverter.ToSingle(bytes);
+                bytes = new byte[sizeof(float)];
+                fichero.Read(bytes);
+                float posX = BitConverter.ToSingle(bytes);
 
-            bytes = new byte[sizeof(float)];
-            fichero.Read(bytes);
-            float posZ = BitConverter.ToSingle(bytes);
+                bytes = new byte[sizeof(float)];
+                fichero.Read(bytes);
+                float posY = BitConverter.ToSingle(bytes);
 
-            fichero.Close();
+                bytes = new byte[sizeof(float)];
+                fichero.Read(bytes);
+                float posZ = BitConverter.ToSingle(bytes);
+
+                Point point = SimulatorCore.CreatePointWithId(idPuntos);
+                point.Name = nombrePuntos;
+                Vector3 posicion = new Vector3();
+
+                posicion.X = posX;
+                posicion.Y = posY;
+                posicion.Z = posZ;
+
+                point.Position = posicion;
+
+                points.Add(point);
+
+                fichero.Close();
+            }
 
             fichero = new FileStream(storageId + "\\Paths", FileMode.Create, FileAccess.Write);
 
@@ -151,7 +185,7 @@ namespace GemeloDigital
             fichero.Read(bytes);
             int vueltasPaths = BitConverter.ToInt32(bytes);
 
-            for (int i = 0; i < vueltasPaths; i++) 
+            for (int i = 0; i < vueltasPaths; i++)
             {
                 fichero.Read(bytes);
                 int cantLetrasNombrePaths = BitConverter.ToInt32(bytes);
@@ -187,6 +221,17 @@ namespace GemeloDigital
                 bytes = new byte[cantLetrasNombrePoint2];
                 fichero.Read(bytes);
                 string idPoint2 = BitConverter.ToString(bytes);
+
+                int idPunto1FromList = points.FindIndex(x => x.Id == idPoint1);
+                int idPunto2FromList = points.FindIndex(x => x.Id == idPoint2);
+
+                Path temp = SimulatorCore.CreatePath(points[idPunto1FromList], points[idPunto2FromList]);
+
+                temp.Name = nombrePaths;
+                temp.CapacityPersons = CapacityPersons;
+                temp.Id = idPaths;
+                
+                paths.Add(temp);
             }
 
             fichero.Close();
@@ -229,9 +274,16 @@ namespace GemeloDigital
                 bytes = new byte[cantLetrasIdFacilityPoint2];
                 fichero.Read(bytes);
                 string IdFacilityPoint2 = BitConverter.ToString(bytes);
+
+                int idPunto1FromList = points.FindIndex(x => x.Id == IdFacilityPoint1);
+                int idPunto2FromList = points.FindIndex(x => x.Id == IdFacilityPoint2);
+                
+                Facility temp = SimulatorCore.CreateFacilityWithId(IdFacility, points[idPunto1FromList], points[idPunto2FromList]);
+
+                temp.Name = nombreFacility;
+
+                facilities.Add(temp);
             }
-
-
 
             fichero.Close();
 
@@ -323,7 +375,7 @@ namespace GemeloDigital
             for (int i = 0; i < persons.Count; i++) 
             {
                 byte[] bytes = new byte[sizeof(int)];
-                bytes = BitConverter.GetBytes(points.Count);
+                bytes = BitConverter.GetBytes(persons.Count);
                 fichero.Write(bytes);
 
                 bytes = new byte[sizeof(int)];
@@ -567,6 +619,12 @@ namespace GemeloDigital
 
         internal override List<string> ListScenes()
         {
+            string[] nombres = Directory.GetDirectories(currentDirectory);
+            foreach(string item in nombres) 
+            {
+                string[] parts = item.Split("\\");
+                list.Add(parts[parts.Length -1]);
+            }
             return list;
         }
 

@@ -16,9 +16,11 @@ namespace GemeloDigital
             if(scenes.Count > 0)
             {
                 int i = 0;
-                foreach(string s in scenes)
+                Console.WriteLine("\nPiggieStorage/");
+                for (int z = 0; z < scenes.Count; z++) 
                 {
-                    Console.WriteLine(i + ": " + s);
+                    string valor = i != scenes.Count - 1 ? "├── " : "└── ";
+                    Console.WriteLine(valor + i  + " --> " + scenes[z]);
                     i++;
                 }
 
