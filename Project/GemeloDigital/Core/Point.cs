@@ -20,11 +20,6 @@ namespace GemeloDigital
             Type = SimulatedObjectType.Point;
         }
 
-        // Cuando alguien intente imprimir un Point, mostrara las posiciones en formato texto, que viene de la clase Point y de la libreria Vector
-        public override string ToString()
-        {
-            return Position.X + " , " + Position.Y + " , "+ Position.Z;
-        }
         
     }
 }
