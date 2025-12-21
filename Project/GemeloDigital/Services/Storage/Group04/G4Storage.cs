@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Formats.Asn1.AsnWriter;
+using System.Globalization;
 
 
 
@@ -35,7 +36,7 @@ namespace GemeloDigital
         {
             Console.WriteLine("G4Storge: Load simulation" + storageId);
 
-
+            string nombreEscena = storageId + ".txt";
 
             FileStream file = new FileStream(nombreEscena, FileMode.Open, FileAccess.Read);
             StreamReader reader = new StreamReader(file, Encoding.UTF8);
@@ -45,25 +46,236 @@ namespace GemeloDigital
             List<Path> listPath = new List<Path>();
             List<Facility> listFacility = new List<Facility>();
             List<Person> listPerson = new List<Person>();
-            
+
+            // Para unir caminos por los IDs
+            Dictionary<string, Point> pointsId = new Dictionary<string, Point>();
+
+          
             // Variables
             string line;
+            string apartado = ""; // Para decir si es caminos/puntos/instlaciones/personas
 
             line = reader.ReadLine();
-            while (line != " *** FIN *** ")
+            // Saltar cabecera hasta INFO
+            while (line != null && line.Trim() != "*** INFO ***")
             {
-                string[] parte = line.Split(": ");
-                //saltos de linea
-
-                bool skip = false;
-                if (line.Trim().Length == 0) { skip = true; }
-
-                else if (line.Trim().Length > 2)
-                {
-                     string apartado = line.Trim('-', ' ');
-                }
-                line =  reader.ReadLine();
+                line = reader.ReadLine();
             }
+
+            // Leer la siguiente línea después de INFO
+            line = reader.ReadLine();
+
+
+            while (line != null && line.Trim() != "*** FIN ***")
+            {
+               
+                if (line.Trim().Length > 2)
+                {
+                    if (line.Contains("---"))
+                    {
+                        apartado = line.Trim('-', ' ').Trim();
+                    }
+                }
+
+                if (apartado == "Puntos")
+                {
+                    // Formato:
+                    // ID: X
+                    // Nombre: Y
+                    // Coordenada: x, y, z
+
+                    if (line.Trim().StartsWith("ID:"))
+                    {
+                        // es una manera de ahorrarse hacer un arrays para separar los contenidos
+                        string id = line.Split(": ")[1].Trim();
+
+                        string nombreLine = reader.ReadLine();
+                        string coordLine = reader.ReadLine();
+
+                        string nombre = nombreLine.Split(":")[1].Trim();
+
+                        string coordText = coordLine.Split(":")[1];
+                        string[] coords = coordText.Split(",");
+
+                        float x = float.Parse(coords[0].Trim(), CultureInfo.InvariantCulture);
+                        float y = float.Parse(coords[1].Trim(), CultureInfo.InvariantCulture);
+                        float z = float.Parse(coords[2].Trim(), CultureInfo.InvariantCulture);
+
+                        Point p = SimulatorCore.CreatePoint(); // creamos la estructura de Point para guardar la info
+
+                        p.Id = id;
+                        p.Name = nombre;
+                        p.Position = new Vector3(x, y, z);
+
+                        listPoint.Add(p);
+                        pointsId[id] = p;
+
+                    }
+
+                }
+                else if (line.Trim() == "FIN PUNTOS")
+                {
+                    apartado = "";
+                }
+                else if (apartado == "Caminos")
+                {
+                    // Formato:
+                    // ID: X
+                    // Camino: Y
+                    // Id Punto1: A
+                    // Id Punto2: B
+
+                    if (line.Trim().StartsWith("ID:"))
+                    {
+                        string id = line.Split(":")[1].Trim();
+
+                        string caminoLine = reader.ReadLine();
+                        string p1Line = reader.ReadLine();
+                        string p2Line = reader.ReadLine();
+
+                        string nombreCamino = caminoLine.Split(":")[1].Trim();
+                        string idP1 = p1Line.Split(": ")[1].Trim();
+                        string idP2 = p2Line.Split(": ")[1].Trim();
+
+                        if (pointsId.ContainsKey(idP1) && pointsId.ContainsKey(idP2))
+                        {
+                            Path path = SimulatorCore.CreatePath(pointsId[idP1], pointsId[idP2]);
+                            path.Id = id;
+                            path.Name = nombreCamino;
+
+                            listPath.Add(path);
+
+                        }
+
+                    }
+                }
+                else if (line.Trim() == "FIN CAMINOS")
+                {
+                    apartado = "";
+                }
+
+                else if (apartado == "Instalaciones")
+                {
+                    // Formato:
+                    // ID: X
+                    // Instalción: Y
+                    // Entrada: id id id
+                    // Salida: id id id
+                    // Consumen: Z
+
+                    if (line.Trim().StartsWith("ID:"))
+                    {
+                        string id = line.Split(":")[1].Trim();
+
+                        string nombreLine = reader.ReadLine();
+                        string entradaLine = reader.ReadLine();
+                        string salidaLine = reader.ReadLine();
+                        string consumoLine = reader.ReadLine();
+
+                        string nombre = nombreLine.Split(": ")[1];
+
+                        string textoEntradas = entradaLine.Split(":")[1].Trim();
+                        string[] partesEntradas = textoEntradas.Split(" ");
+
+                        List<string> entradasIds = new List<string>();
+                        foreach (string s in partesEntradas)
+                        {
+                            if (s != "")
+                                entradasIds.Add(s);
+                        }
+
+                        string textoSalidas = salidaLine.Split(":")[1].Trim();
+                        string[] partesSalidas = textoSalidas.Split(" ");
+
+                        List<string> salidasIds = new List<string>();
+                        foreach (string s in partesSalidas)
+                        {
+                            if (s != "")
+                                salidasIds.Add(s);
+                        }
+
+
+                        float consumo = float.Parse(consumoLine.Split(":")[1], CultureInfo.InvariantCulture);
+
+                        Facility facility = SimulatorCore.CreateFacility(pointsId[entradasIds[0]], pointsId[salidasIds[0]]);
+
+                        facility.Id = id;
+                        facility.Name = nombre.Trim();
+                        facility.PowerConsumed = consumo;
+
+
+                        // iniciamos en 1 porque cuando creamos la facility le asignamos los primeros ids
+                        for (int i = 1; i < entradasIds.Count; i++)
+                        {
+                            if (pointsId.ContainsKey(entradasIds[i]))
+                            {
+                                facility.Entrances.Add(pointsId[entradasIds[i]]);
+                            }
+                        }
+
+                        for (int i = 1; i < salidasIds.Count; i++)
+                        {
+                            if (pointsId.ContainsKey(salidasIds[i]))
+                            {
+                                facility.Exits.Add(pointsId[salidasIds[i]]);
+
+                            }
+                        }
+
+                        listFacility.Add(facility);
+
+                    }
+
+                }
+                else if (line.Trim() == "FIN INSTALACIONES")
+                {
+                    apartado = "";
+                }
+
+                else if (apartado == "Personas")
+                {
+                    // Formato:
+                    // ID: X
+                    // Nombre: Y
+                    // Edad: N
+                    // Altura: N
+                    // Peso: N
+                    // Dinero: N
+
+                    if (line.Trim().StartsWith("ID:"))
+                    {
+
+                        string id = line.Split(":")[1].Trim();
+
+                        string nombreLine = reader.ReadLine();
+                        string edadLine = reader.ReadLine();
+                        string alturaLine = reader.ReadLine();
+                        string pesoLine = reader.ReadLine();
+                        string dineroLine = reader.ReadLine();
+
+                        Person persona = SimulatorCore.CreatePerson();
+
+                        persona.Id = id;
+                        persona.Name = nombreLine.Split(":")[1].Trim();
+                        persona.Age = Int32.Parse(edadLine.Split(":")[1].Trim());
+                        persona.Height = float.Parse(alturaLine.Split(":")[1]);
+                        persona.Weight = float.Parse(pesoLine.Split(":")[1]);
+                        persona.Money = float.Parse(dineroLine.Split(":")[1]);
+
+                        listPerson.Add(persona);
+                    }
+
+                }
+                else if (line.Trim() == "FIN PERSONAS")
+                {
+                    apartado = "";
+                }
+
+                line = reader.ReadLine();
+            }
+
+            reader.Close();
+            file.Close();
  
         }
 
@@ -174,7 +386,7 @@ namespace GemeloDigital
                     }
                 
                 writer.WriteLine("Entrada: " + pointsEntrances);
-                writer.WriteLine("Entrada: " + pointsExits);
+                writer.WriteLine("Salida: " + pointsExits);
                 writer.WriteLine("Consumen: " + facilitiesList[i].PowerConsumed);
             }
             writer.WriteLine("FIN INSTALACIONES");
@@ -208,28 +420,16 @@ namespace GemeloDigital
 
         internal override List<string> ListScenes()
         {
-
             string direc = Directory.GetCurrentDirectory();
-            string[] list = Directory.GetDirectories(direc);
+            string[] files = Directory.GetFiles(direc, "*.txt");
 
             List<string> result = new List<string>();
 
-            for (int i = 0; i < list.Length; i++) 
+            foreach (string file in files)
             {
-                result.Add(list[i]);
+                string sceneName = System.IO.Path.GetFileNameWithoutExtension(file);
+                result.Add(sceneName);
             }
-
-            /*
-            try
-            {
-                var textFile = Directory.GetFiles();
-            
-            }
-            catch { }
-            string[] partes = nombreEscena.Split(".");
-            string escena = partes[1];
-            result.Add(escena);
-            */
             return result; 
         }
     }
