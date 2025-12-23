@@ -98,6 +98,7 @@ namespace GemeloDigital
 
             for (int i = 0; i < vueltasPaths; i++)
             {
+                bytes = new byte[sizeof(int)];
                 fichero.Read(bytes);
                 int cantLetrasNombrePaths = BitConverter.ToInt32(bytes);
 
@@ -153,6 +154,7 @@ namespace GemeloDigital
 
             for (int i = 0; i < vueltasFacilities; i++) 
             {
+                bytes = new byte[sizeof(int)];
                 fichero.Read(bytes);
                 int cantLetrasNombreFacility = BitConverter.ToInt32(bytes);
 
@@ -517,8 +519,6 @@ namespace GemeloDigital
 
             for (int i = 0; i< paths.Count; i++)
             {
-
-
                 bytes = new byte[sizeof(int)];
                 int length = paths[i].Name.Length;
                 bytes = BitConverter.GetBytes(length);
