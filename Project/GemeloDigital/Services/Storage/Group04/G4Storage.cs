@@ -24,7 +24,6 @@ namespace GemeloDigital
         {
            Console.WriteLine("G4Storage: Initializing");
 
-
         }
 
         internal override void Finish()
@@ -194,7 +193,6 @@ namespace GemeloDigital
                                 salidasIds.Add(s);
                         }
 
-
                         float consumo = float.Parse(consumoLine.Split(":")[1], CultureInfo.InvariantCulture);
 
                         Facility facility = SimulatorCore.CreateFacility(pointsId[entradasIds[0]], pointsId[salidasIds[0]]);
@@ -218,12 +216,10 @@ namespace GemeloDigital
                             if (pointsId.ContainsKey(salidasIds[i]))
                             {
                                 facility.Exits.Add(pointsId[salidasIds[i]]);
-
                             }
                         }
 
                         listFacility.Add(facility);
-
                     }
 
                 }
@@ -276,7 +272,7 @@ namespace GemeloDigital
 
             reader.Close();
             file.Close();
- 
+
         }
 
         internal override void SaveScene(string storageId)
@@ -334,13 +330,13 @@ namespace GemeloDigital
             // Variables
             string iDPoint = "";
 
-
+            //METADATOS
             writer.WriteLine("******** " +  nombreEscena + " ******** ");
             writer.WriteLine("Nombre Equipo: " + Environment.MachineName); // <-- Sacamos el nombre del equipo.
             writer.WriteLine("Fecha: " + thisDay);
 
+            //DATOS
             writer.WriteLine("\n *** INFO ***");
-
 
             writer.WriteLine("\n --- Puntos ---");
 
@@ -410,12 +406,17 @@ namespace GemeloDigital
             writer.Close();
             file.Close();
 
-            
         }
-        
         internal override void DeleteScene(string storageId)
         {
             //Console.WriteLine("Deleting simulation " + storageId);
+            string nombreEscena = storageId + ".txt";
+
+            // Comprueba si ese fichero existe y lo elimina
+            if (File.Exists(nombreEscena))
+            {   
+                File.Delete(nombreEscena);
+            }
         }
 
         internal override List<string> ListScenes()
