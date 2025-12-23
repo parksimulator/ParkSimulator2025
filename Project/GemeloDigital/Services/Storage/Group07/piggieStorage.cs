@@ -20,7 +20,6 @@ namespace GemeloDigital
 
         internal override void Initialize()
         {
-            
 
         }
         internal override void Finish()
@@ -203,7 +202,7 @@ namespace GemeloDigital
 
             for (int o = 0; o < vueltasPersonas; o++)
             {
-
+                bytes = new byte[sizeof(int)];
                 fichero.Read(bytes);
                 int cantidadDeLetras = BitConverter.ToInt32(bytes);
 
@@ -231,9 +230,9 @@ namespace GemeloDigital
                 {
                     bytes = new byte[sizeof(int)];
                     fichero.Read(bytes);
-                    int letrasCant = BitConverter.ToInt32(bytes);
+                    int letrasCantFacility = BitConverter.ToInt32(bytes);
 
-                    bytes = new byte[letrasCant];
+                    bytes = new byte[letrasCantFacility];
                     fichero.Read(bytes);
                     idFacility = Encoding.ASCII.GetString(bytes);
                 }
@@ -247,20 +246,17 @@ namespace GemeloDigital
                 {
                     bytes = new byte[sizeof(int)];
                     fichero.Read(bytes);
-                    int letrasCant = BitConverter.ToInt32(bytes);
+                    int letrasCantPath = BitConverter.ToInt32(bytes); 
 
-                    bytes = new byte[letrasCant];
+                    bytes = new byte[letrasCantPath];
                     fichero.Read(bytes);
                     idPath = Encoding.ASCII.GetString(bytes);
                 }
 
+
                 bytes = new byte[sizeof(float)];
                 fichero.Read(bytes);
                 float money = BitConverter.ToSingle(bytes);
-
-                bytes = new byte[sizeof(int)];
-                fichero.Read(bytes);
-                int length = BitConverter.ToInt32(bytes);
 
                 fichero.Read(bytes);
                 int cantLetras = BitConverter.ToInt32(bytes);
@@ -418,7 +414,7 @@ namespace GemeloDigital
                     bytes = Encoding.ASCII.GetBytes(persons[i].IsAtFacility.Id);
                     fichero.Write(bytes);
                 }
-                else 
+                else
                 {
                     isAtFacilityBool = false;
                     bytes = new byte[sizeof(bool)];
@@ -426,11 +422,12 @@ namespace GemeloDigital
                     fichero.Write(bytes);
                 }
 
+                bool isAtPath;
                 if (persons[i].IsAtPath != null)
                 {
-                    isAtFacilityBool = true;
+                    isAtPath = true;
                     bytes = new byte[sizeof(bool)];
-                    bytes = BitConverter.GetBytes(isAtFacilityBool);
+                    bytes = BitConverter.GetBytes(isAtPath);
                     fichero.Write(bytes);
 
                     bytes = new byte[sizeof(int)];
@@ -442,13 +439,14 @@ namespace GemeloDigital
                     bytes = Encoding.ASCII.GetBytes(persons[i].IsAtPath.Id);
                     fichero.Write(bytes);
                 }
-                else 
+                else
                 {
-                    isAtFacilityBool = false;
+                    isAtPath = false;
                     bytes = new byte[sizeof(bool)];
-                    bytes = BitConverter.GetBytes(isAtFacilityBool);
+                    bytes = BitConverter.GetBytes(isAtPath);   
                     fichero.Write(bytes);
                 }
+
 
                 bytes = new byte[sizeof(float)];
                 bytes = BitConverter.GetBytes(persons[i].Money);
