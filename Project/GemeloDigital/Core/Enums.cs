@@ -16,7 +16,13 @@ namespace GemeloDigital
         Facility,
         Person,
         Point,
-        Path
+        Path,
+        Camera,
+        Model,
+        Material,
+        Texture,
+        Shader,
+        Mesh
     }
 
     /// <summary>

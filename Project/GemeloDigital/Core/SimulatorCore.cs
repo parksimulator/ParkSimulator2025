@@ -29,13 +29,15 @@ namespace GemeloDigital
         /// </summary>
         public static float Time { get { return steps * Constants.hoursPerStep; } }
 
-        const string version = "4";
+        const string version = "6";
         static SimulatorState state;
         static int steps;
 
         static List<SimulatedObject> simulatedObjects;
 
         static Storage storage;
+        static Render render;
+        static Resources resources;
 
         /// <summary>
         /// Inicia el simulador. Debe llamarse
@@ -48,9 +50,13 @@ namespace GemeloDigital
 
             state = SimulatorState.Stopped;
 
-            storage = new DummyStorage();
+            storage = new Cargarguardar();
+            render = new GLRender();
+            resources = new FileResources();
 
+            resources.Initialize();
             storage.Initialize();
+            render.Initialize();
         }
 
         /// <summary>
@@ -105,7 +111,10 @@ namespace GemeloDigital
         /// </summary>
         public static void Finish()
         {
+            render.Finish();
             storage.Finish();
+            resources.Finish();
+
 
             simulatedObjects = null;
 
@@ -175,6 +184,84 @@ namespace GemeloDigital
             simulatedObjects.Add(p);
 
             return p;
+        }
+
+        /// <summary>
+        /// Crea una cámara con propiedades por defecto y la 
+        /// añade al listado de objetos simulados
+        /// </summary>
+        /// <returns>La cámara creada</returns>
+        public static Camera CreateCamera()
+        {
+            Camera c = new Camera();
+            simulatedObjects.Add(c);
+
+            return c;
+        }
+
+        /// <summary>
+        /// Crea una textura con propiedades por defecto y la 
+        /// añade al listado de objetos simulados
+        /// </summary>
+        /// <returns>La textura creada</returns>
+        public static Texture CreateTexture()
+        {
+            Texture t = new Texture();
+            simulatedObjects.Add(t);
+
+            return t;
+        }
+
+        /// <summary>
+        /// Crea un material con propiedades por defecto y la 
+        /// añade al listado de objetos simulados
+        /// </summary>
+        /// <returns>El material creado</returns>
+        public static Material CreateMaterial()
+        {
+            Material m = new Material();
+            simulatedObjects.Add(m);
+
+            return m;
+        }
+
+        /// <summary>
+        /// Crea un modelo con propiedades por defecto y la 
+        /// añade al listado de objetos simulados
+        /// </summary>
+        /// <returns>El modelo creado</returns>
+        public static Model CreateModel()
+        {
+            Model m = new Model();
+            simulatedObjects.Add(m);
+
+            return m;
+        }
+
+        /// <summary>
+        /// Crea una malla con propiedades por defecto y la 
+        /// añade al listado de objetos simulados
+        /// </summary>
+        /// <returns>La malla creada</returns>
+        public static Mesh CreateMesh()
+        {
+            Mesh m = new Mesh();
+            simulatedObjects.Add(m);
+
+            return m;
+        }
+
+        /// <summary>
+        /// Crea un shader con propiedades por defecto y lo
+        /// añade al listado de objetos simulados
+        /// </summary>
+        /// <returns>El shader creado</returns>
+        public static Shader CreateShader()
+        {
+            Shader s = new Shader();
+            simulatedObjects.Add(s);
+
+            return s;
         }
 
         /// <summary>
@@ -272,6 +359,67 @@ namespace GemeloDigital
         {
             return (Path)obj;
         }
+
+        /// <summary>
+        /// Convierte el objeto en una cámara.
+        /// </summary>
+        /// <param name="obj">El objeto a convertir</param>
+        /// <returns>El objeto convertido en una camara</returns>
+        public static Camera AsCamera(SimulatedObject obj)
+        {
+            return (Camera)obj;
+        }
+
+        /// <summary>
+        /// Convierte el objeto en una textura.
+        /// </summary>
+        /// <param name="obj">El objeto a convertir</param>
+        /// <returns>El objeto convertido en una textura</returns>
+        public static Texture AsTexture(SimulatedObject obj)
+        {
+            return (Texture)obj;
+        }
+
+        /// <summary>
+        /// Convierte el objeto en un material.
+        /// </summary>
+        /// <param name="obj">El objeto a convertir</param>
+        /// <returns>El objeto convertido en un material</returns>
+        public static Material AsMaterial(SimulatedObject obj)
+        {
+            return (Material)obj;
+        }
+
+        /// <summary>
+        /// Convierte el objeto en un modelo.
+        /// </summary>
+        /// <param name="obj">El objeto a convertir</param>
+        /// <returns>El objeto convertido en un modelo</returns>
+        public static Model AsModel(SimulatedObject obj)
+        {
+            return (Model)obj;
+        }
+
+        /// <summary>
+        /// Convierte el objeto en una malla.
+        /// </summary>
+        /// <param name="obj">El objeto a convertir</param>
+        /// <returns>El objeto convertido en una malla</returns>
+        public static Mesh AsMesh(SimulatedObject obj)
+        {
+            return (Mesh)obj;
+        }
+
+        /// <summary>
+        /// Convierte el objeto en un shader.
+        /// </summary>
+        /// <param name="obj">El objeto a convertir</param>
+        /// <returns>El objeto convertido en un shader</returns>
+        public static Shader AsShader(SimulatedObject obj)
+        {
+            return (Shader)obj;
+        }
+
 
         /// <summary>
         /// Devuelve el valor de un KPI general

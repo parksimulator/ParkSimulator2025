@@ -274,6 +274,11 @@ namespace GemeloDigital
                     Console.WriteLine(tab + tab + "2.- Instalación");
                     Console.WriteLine(tab + tab + "3.- Punto");
                     Console.WriteLine(tab + tab + "4.- Camino");
+                    Console.WriteLine(tab + tab + "5.- Cámara");
+                    Console.WriteLine(tab + tab + "6.- Modelo");
+                    Console.WriteLine(tab + tab + "7.- Material");
+                    Console.WriteLine(tab + tab + "8.- Malla");
+                    Console.WriteLine(tab + tab + "9.- Shader");
                     Console.WriteLine();
                     Console.WriteLine(tab + tab + "0.- Atrás");
                     Console.WriteLine();
@@ -358,6 +363,55 @@ namespace GemeloDigital
                             Console.WriteLine("No hay al menos dos puntos que unir en un camino");
                             Thread.Sleep(messageWaitTime);
                         }
+                    }
+                    else if(option == 5)
+                    {
+                        List<SimulatedObject> cameras = SimulatorCore.FindObjectsOfType(SimulatedObjectType.Camera);
+
+                        if(cameras.Count > 0)
+                        {
+                            Console.WriteLine("No puede existir más de una cámara en la escena");
+                        }
+                        else
+                        {
+                            Camera c = SimulatorCore.CreateCamera();
+                            c.Name = AskString("Nombre");
+
+                            AskCameraProperties(c);
+                            
+                        }
+                    }
+                    else if(option == 6)
+                    {
+                        Model m = SimulatorCore.CreateModel();
+                        m.Name = AskString("Nombre");
+
+                        AskModelProperties(m);
+
+                    }
+                    else if(option == 7)
+                    {
+                        Material m = SimulatorCore.CreateMaterial();
+                        m.Name = AskString("Nombre");
+
+                        AskMaterialProperties(m);
+
+                    }
+                    else if(option == 8)
+                    {
+                        Mesh m = SimulatorCore.CreateMesh();
+                        m.Name = AskString("Nombre");
+
+                        AskMeshProperties(m);
+
+                    }
+                    else if(option == 9)
+                    {
+                        Shader s = SimulatorCore.CreateShader();
+                        s.Name = AskString("Nombre");
+
+                        AskShaderProperties(s);
+
                     }
                     else if(option == 0)
                     {

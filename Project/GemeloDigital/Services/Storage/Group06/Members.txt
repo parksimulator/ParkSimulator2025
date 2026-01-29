@@ -1,0 +1,37 @@
+¿Qué hay que guardar?
+
+Facility:
+-- Entrances
+-- Exits
+-- Name
+-- PowerConsumed
+-- Id 
+-- Type 
+
+Path:
+-- Point 1
+-- Point 2
+-- Name
+-- CapacityPersons 
+-- Distance 
+-- Type
+
+Person:
+-- Age
+-- Height
+-- Weight
+-- Money
+-- IsAtFacility
+-- IsAtPath 
+-- Id 
+-- Type 
+-- Name
+
+Point: 
+-- Name
+-- Type
+-- X position
+-- Y position
+-- Z position
+
+
