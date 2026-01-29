@@ -184,6 +184,86 @@ namespace GemeloDigital
             p.Point2 = p2;
         }
 
+        static void AskCameraProperties(Camera c)
+        {
+            Vector3 position;
+            position.X = AskSingle("PosX");
+            position.Y = AskSingle("PosY");
+            position.Z = AskSingle("PosZ");
+
+            c.Position = position;
+
+            Vector3 rotation;
+            rotation.X = AskSingle("RotX");
+            rotation.Y = AskSingle("RotY");
+            rotation.Z = AskSingle("RotZ");
+
+            c.Rotation = rotation;
+
+            c.FOV = AskSingle("FOV");
+            c.ZNear = AskSingle("ZNear");
+            c.ZFar = AskSingle("ZFar");
+
+        }
+
+        static void AskModelProperties(Model m)
+        {
+            Vector3 position;
+            position.X = AskSingle("PosX");
+            position.Y = AskSingle("PosY");
+            position.Z = AskSingle("PosZ");
+
+            m.Position = position;
+
+            Vector3 rotation;
+            rotation.X = AskSingle("RotX");
+            rotation.Y = AskSingle("RotY");
+            rotation.Z = AskSingle("RotZ");
+
+            m.Rotation = rotation;
+
+            Vector3 scale;
+            scale.X = AskSingle("ScaleX");
+            scale.Y = AskSingle("ScaleY");
+            scale.Z = AskSingle("ScaleZ");
+
+            m.Scale = rotation;
+
+            SimulatedObject obj = PickObjectOrNull("Material", "Materials", SimulatedObjectType.Material);
+            m.material = SimulatorCore.AsMaterial(obj);
+        }
+
+        static void AskMaterialProperties(Material m)
+        {
+            Vector3 color;
+            color.X = AskIntegerBetween("ColorR", 0, 255) / 255.0f;
+            color.Y = AskIntegerBetween("ColorG", 0, 255) / 255.0f;
+            color.Z = AskIntegerBetween("ColorB", 0, 255) / 255.0f;
+
+            m.Color = color;
+
+            SimulatedObject obj = PickObjectOrNull("Shader", "Shaders", SimulatedObjectType.Shader);
+            m.Shader = SimulatorCore.AsShader(obj);
+
+            obj = PickObjectOrNull("Textura", "Texturas", SimulatedObjectType.Texture);
+            m.Texture = SimulatorCore.AsTexture(obj);
+        }
+
+        static void AskMeshProperties(Mesh m)
+        {
+            m.ResourceId = AskString("Identificador de recurso");
+        }
+
+        static void AskShaderProperties(Shader s)
+        {
+            s.ResourceId = AskString("Identificador de recurso");
+        }
+
+        static void AskTextureProperties(Texture t)
+        {
+            t.ResourceId = AskString("Identificador de recurso");
+        }
+
         static void AskContinue()
         {
             Console.Write("pulsa [intro] para continuar");
