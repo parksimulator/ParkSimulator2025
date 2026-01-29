@@ -26,9 +26,14 @@ namespace GemeloDigital
             return File.Exists(basePath + id);
         }
 
-        internal override byte[] GetResource(string id)
+        internal override byte[] GetBinaryResource(string id)
         {
             return File.ReadAllBytes(basePath + id);
+        }
+
+        internal override string GetTextResource(string id, Encoding encoding)
+        {
+            return File.ReadAllText(basePath + id, encoding);
         }
 
     }}

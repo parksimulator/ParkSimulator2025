@@ -12,7 +12,9 @@ namespace GemeloDigital
         internal abstract void Finish();
 
         internal abstract bool ExistsResource(string id);
-        internal abstract byte[] GetResource(string id);
+        internal abstract byte[] GetBinaryResource(string id);
+        internal abstract string GetTextResource(string id, Encoding encoding);
+
 
     }
 }
