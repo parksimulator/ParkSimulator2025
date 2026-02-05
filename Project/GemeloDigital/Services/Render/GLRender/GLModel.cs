@@ -7,22 +7,24 @@ namespace GemeloDigital
 {
     public class GLModel : IDisposable
     {
-        public GLModel(GL gl, string path, bool gamma = false)
+        public GLModel(GL gl, byte[] bytes, bool gamma = false)
         {
             assimp = Assimp.GetApi();
             openGL = gl;
-            LoadModel(path);
+            LoadModel(bytes);
         }
 
         readonly GL openGL;
         Assimp assimp;
         List<GLTexture> textures = new List<GLTexture>();
-        public string directory { get; protected set; } = string.Empty;
         public List<GLMesh> meshes { get; protected set; } = new List<GLMesh>();
 
-        unsafe void LoadModel(string path)
+        unsafe void LoadModel(byte[] bytes)
         {
-            var scene = assimp.ImportFile(path, (uint)PostProcessSteps.Triangulate);
+            byte hint;
+            var scene = assimp.ImportFileFromMemory(bytes, (uint)bytes.Length, (uint)PostProcessSteps.Triangulate, "");
+
+            // var scene = assimp.ImportFile(path, (uint)PostProcessSteps.Triangulate);
 
             if (scene == null || scene->MFlags == Silk.NET.Assimp.Assimp.SceneFlagsIncomplete || scene->MRootNode == null)
             {
@@ -30,7 +32,6 @@ namespace GemeloDigital
                 throw new Exception(error);
             }
 
-            directory = path;
             ProcessNode(scene->MRootNode, scene);
         }
 
@@ -98,63 +99,13 @@ namespace GemeloDigital
 
             // process materials
             Silk.NET.Assimp.Material* material = scene->MMaterials[mesh->MMaterialIndex];
-            // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-            // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-            // Same applies to other texture as the following list summarizes:
-            // diffuse: texture_diffuseN
-            // specular: texture_specularN
-            // normal: texture_normalN
 
-            // 1. diffuse maps
-            var diffuseMaps = LoadMaterialTextures(material, TextureType.Diffuse, "texture_diffuse");
-            if (diffuseMaps.Any())
-                textures.AddRange(diffuseMaps);
-            // 2. specular maps
-            var specularMaps = LoadMaterialTextures(material, TextureType.Specular, "texture_specular");
-            if (specularMaps.Any())
-                textures.AddRange(specularMaps);
-            // 3. normal maps
-            var normalMaps = LoadMaterialTextures(material, TextureType.Height, "texture_normal");
-            if (normalMaps.Any())
-                textures.AddRange(normalMaps);
-            // 4. height maps
-            var heightMaps = LoadMaterialTextures(material, TextureType.Ambient, "texture_height");
-            if (heightMaps.Any())
-                textures.AddRange(heightMaps);
 
             // return a mesh object created from the extracted mesh data
             var result = new GLMesh(openGL, BuildVertices(vertices), BuildIndices(indices), textures);
             return result;
         }
 
-        unsafe List<GLTexture> LoadMaterialTextures(Silk.NET.Assimp.Material* mat, TextureType type, string typeName)
-        {
-            var textureCount = assimp.GetMaterialTextureCount(mat, type);
-            List<GLTexture> textures = new List<GLTexture>();
-            for (uint i = 0; i < textureCount; i++)
-            {
-                AssimpString path;
-                assimp.GetMaterialTexture(mat, type, i, &path, null, null, null, null, null, null);
-                bool skip = false;
-                for (int j = 0; j < textures.Count; j++)
-                {
-                    if (textures[j].Path == path)
-                    {
-                        textures.Add(textures[j]);
-                        skip = true;
-                        break;
-                    }
-                }
-                if (!skip)
-                {
-                    var texture = new GLTexture(openGL, directory, type);
-                    texture.Path = path;
-                    textures.Add(texture);
-                    textures.Add(texture);
-                }
-            }
-            return textures;
-        }
 
         float[] BuildVertices(List<GLVertex> vertexCollection)
         {

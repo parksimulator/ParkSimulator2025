@@ -11,18 +11,21 @@ namespace GemeloDigital
         uint handle;
         GL openGL;
 
-        public string Path { get; set; }
         public TextureType type { get; }
 
-        public unsafe GLTexture(GL gl, string path, TextureType _type = TextureType.None)
+        public unsafe GLTexture(GL gl, string file, TextureType _type = TextureType.None) : this(gl, System.IO.File.ReadAllBytes(file), _type)
+        {
+
+        }
+
+        public unsafe GLTexture(GL gl, byte[] bytes, TextureType _type = TextureType.None)
         {
             openGL = gl;
-            Path = path;
             type = _type;
             handle = openGL.GenTexture();
             Bind();
 
-            using (var img = Image.Load<Rgba32>(path))
+            using (var img = Image.Load<Rgba32>(bytes))
             {
                 gl.TexImage2D(TextureTarget.Texture2D, 0, InternalFormat.Rgba8, (uint)img.Width, (uint)img.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, null);
 

@@ -582,6 +582,20 @@ namespace GemeloDigital
 
             return p;
         }
+
+        internal static bool ExistsResource(string resourceId)
+        {
+            return resources.ExistsResource(resourceId);
+        }
+
+        internal static byte[] GetBinaryResource(string resourceId)
+        {
+            return resources.GetBinaryResource(resourceId);
+        }
         
+        internal static string GetTextResource(string resourceId, Encoding encoding)
+        {
+            return resources.GetTextResource(resourceId, encoding);
+        }
     }
 }

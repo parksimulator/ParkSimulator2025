@@ -213,6 +213,31 @@ namespace GemeloDigital
                                 Path p = SimulatorCore.AsPath(selectedObject);
                                 AskPathProperties(p);
                             }
+                            else if(selectedObject.Type == SimulatedObjectType.Camera3D)
+                            {
+                                Camera3D c = SimulatorCore.AsCamera3D(selectedObject);
+                                AskCamera3DProperties(c);
+                            }
+                            else if(selectedObject.Type == SimulatedObjectType.Object3D)
+                            {
+                                Object3D o = SimulatorCore.AsObject3D(selectedObject);
+                                AskObject3DProperties(o);
+                            }
+                            else if(selectedObject.Type == SimulatedObjectType.Model)
+                            {
+                                Model m = SimulatorCore.AsModel(selectedObject);
+                                AskModelProperties(m);
+                            }
+                            else if(selectedObject.Type == SimulatedObjectType.Texture)
+                            {
+                                Texture t = SimulatorCore.AsTexture(selectedObject);
+                                AskTextureProperties(t);
+                            }
+                            else if(selectedObject.Type == SimulatedObjectType.Shader)
+                            {
+                                Shader s = SimulatorCore.AsShader(selectedObject);
+                                AskShaderProperties(s);
+                            }
 
                         }
                     }
@@ -279,13 +304,14 @@ namespace GemeloDigital
                     Console.WriteLine(tab + tab + "7.- Material");
                     Console.WriteLine(tab + tab + "8.- Modelo");
                     Console.WriteLine(tab + tab + "9.- Shader");
+                    Console.WriteLine(tab + tab + "10.- Textura");
                     Console.WriteLine();
                     Console.WriteLine(tab + tab + "0.- Atrás");
                     Console.WriteLine();
                     Console.WriteLine("--------------------------------------------");
                     Console.WriteLine();
 
-                    option = AskIntegerBetween("Opción", 0, 9);
+                    option = AskIntegerBetween("Opción", 0, 10);
 
                     if(option == 1)
                     {
@@ -411,6 +437,14 @@ namespace GemeloDigital
                         s.Name = AskString("Nombre");
 
                         AskShaderProperties(s);
+
+                    }
+                    else if(option == 10)
+                    {
+                        Texture t = SimulatorCore.CreateTexture();
+                        t.Name = AskString("Nombre");
+
+                        AskTextureProperties(t);
 
                     }
                     else if(option == 0)
