@@ -8,8 +8,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Blue.png" />
+    <None Remove="Resources\Box.obj" />
+    <None Remove="Resources\Gargoyle.obj" />
+    <None Remove="Resources\Grass.png" />
+    <None Remove="Resources\Gray.png" />
+    <None Remove="Resources\Green.png" />
+    <None Remove="Resources\House.obj" />
+    <None Remove="Resources\Lizzard.obj" />
     <None Remove="Resources\Model.obj" />
+    <None Remove="Resources\Purple.png" />
+    <None Remove="Resources\Red.png" />
+    <None Remove="Resources\Rock.png" />
+    <None Remove="Resources\RockMedium1.obj" />
+    <None Remove="Resources\RockMedium2.obj" />
+    <None Remove="Resources\SirMartin.obj" />
+    <None Remove="Resources\Terrain.obj" />
     <None Remove="Resources\Texture.png" />
+    <None Remove="Resources\Texture1.png" />
+    <None Remove="Resources\Texture2.png" />
+    <None Remove="Resources\Wall.obj" />
+    <None Remove="Resources\Wood.png" />
+    <None Remove="Resources\Yellow.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +48,69 @@
     <PackageReference Include="Silk.NET" Version="2.23.0" />
     <PackageReference Include="Silk.NET.Assimp" Version="2.23.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Blue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Box.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Gargoyle.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Gray.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Green.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\House.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Lizzard.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Purple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Red.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Rock.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\RockMedium1.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\RockMedium2.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\SirMartin.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Terrain.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Texture1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Texture2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Wall.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Wood.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Yellow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
