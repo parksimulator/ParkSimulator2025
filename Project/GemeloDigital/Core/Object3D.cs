@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GemeloDigital
 {
-    public class Model : SimulatedObject
+    public class Object3D : SimulatedObject
     {
         /// <summary>
         /// Posicion del modelo
@@ -23,10 +23,10 @@ namespace GemeloDigital
         public Material material;
         public Mesh mesh;
 
-        internal Model()
+        internal Object3D()
         {
-            Name = "Model";
-            Type = SimulatedObjectType.Model;
+            Name = "Object3D";
+            Type = SimulatedObjectType.Object3D;
         }
 
     }

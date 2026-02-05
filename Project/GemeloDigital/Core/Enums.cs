@@ -18,7 +18,7 @@ namespace GemeloDigital
         Point,
         Path,
         Camera,
-        Model,
+        Object3D,
         Material,
         Texture,
         Shader,

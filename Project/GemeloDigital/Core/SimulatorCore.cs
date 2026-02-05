@@ -230,9 +230,9 @@ namespace GemeloDigital
         /// añade al listado de objetos simulados
         /// </summary>
         /// <returns>El modelo creado</returns>
-        public static Model CreateModel()
+        public static Object3D CreateObject3D()
         {
-            Model m = new Model();
+            Object3D m = new Object3D();
             simulatedObjects.Add(m);
 
             return m;
@@ -391,13 +391,13 @@ namespace GemeloDigital
         }
 
         /// <summary>
-        /// Convierte el objeto en un modelo.
+        /// Convierte el objeto en un objeto 3D.
         /// </summary>
         /// <param name="obj">El objeto a convertir</param>
         /// <returns>El objeto convertido en un modelo</returns>
-        public static Model AsModel(SimulatedObject obj)
+        public static Object3D AsObject3D(SimulatedObject obj)
         {
-            return (Model)obj;
+            return (Object3D)obj;
         }
 
         /// <summary>

@@ -275,7 +275,7 @@ namespace GemeloDigital
                     Console.WriteLine(tab + tab + "3.- Punto");
                     Console.WriteLine(tab + tab + "4.- Camino");
                     Console.WriteLine(tab + tab + "5.- Cámara");
-                    Console.WriteLine(tab + tab + "6.- Modelo");
+                    Console.WriteLine(tab + tab + "6.- Objeto3D");
                     Console.WriteLine(tab + tab + "7.- Material");
                     Console.WriteLine(tab + tab + "8.- Malla");
                     Console.WriteLine(tab + tab + "9.- Shader");
@@ -383,10 +383,10 @@ namespace GemeloDigital
                     }
                     else if(option == 6)
                     {
-                        Model m = SimulatorCore.CreateModel();
+                        Object3D m = SimulatorCore.CreateObject3D();
                         m.Name = AskString("Nombre");
 
-                        AskModelProperties(m);
+                        AskObject3DProperties(m);
 
                     }
                     else if(option == 7)

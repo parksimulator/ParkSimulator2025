@@ -206,7 +206,7 @@ namespace GemeloDigital
 
         }
 
-        static void AskModelProperties(Model m)
+        static void AskObject3DProperties(Object3D m)
         {
             Vector3 position;
             position.X = AskSingle("PosX");
@@ -231,6 +231,9 @@ namespace GemeloDigital
 
             SimulatedObject obj = PickObjectOrNull("Material", "Materials", SimulatedObjectType.Material);
             m.material = SimulatorCore.AsMaterial(obj);
+
+            obj = PickObjectOrNull("Mesh", "Meshes", SimulatedObjectType.Mesh);
+            m.mesh = SimulatorCore.AsMesh(obj);
         }
 
         static void AskMaterialProperties(Material m)
