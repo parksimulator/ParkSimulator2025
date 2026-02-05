@@ -274,7 +274,7 @@ namespace GemeloDigital
                     Console.WriteLine(tab + tab + "2.- Instalación");
                     Console.WriteLine(tab + tab + "3.- Punto");
                     Console.WriteLine(tab + tab + "4.- Camino");
-                    Console.WriteLine(tab + tab + "5.- Cámara");
+                    Console.WriteLine(tab + tab + "5.- Cámara3D");
                     Console.WriteLine(tab + tab + "6.- Objeto3D");
                     Console.WriteLine(tab + tab + "7.- Material");
                     Console.WriteLine(tab + tab + "8.- Modelo");
@@ -285,7 +285,7 @@ namespace GemeloDigital
                     Console.WriteLine("--------------------------------------------");
                     Console.WriteLine();
 
-                    option = AskIntegerBetween("Opción", 0, 4);
+                    option = AskIntegerBetween("Opción", 0, 9);
 
                     if(option == 1)
                     {
@@ -366,7 +366,7 @@ namespace GemeloDigital
                     }
                     else if(option == 5)
                     {
-                        List<SimulatedObject> cameras = SimulatorCore.FindObjectsOfType(SimulatedObjectType.Camera);
+                        List<SimulatedObject> cameras = SimulatorCore.FindObjectsOfType(SimulatedObjectType.Camera3D);
 
                         if(cameras.Count > 0)
                         {
@@ -374,10 +374,10 @@ namespace GemeloDigital
                         }
                         else
                         {
-                            Camera c = SimulatorCore.CreateCamera();
+                            Camera3D c = SimulatorCore.CreateCamera3D();
                             c.Name = AskString("Nombre");
 
-                            AskCameraProperties(c);
+                            AskCamera3DProperties(c);
                             
                         }
                     }

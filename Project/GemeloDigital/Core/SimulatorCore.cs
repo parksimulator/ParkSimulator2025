@@ -187,13 +187,13 @@ namespace GemeloDigital
         }
 
         /// <summary>
-        /// Crea una cámara con propiedades por defecto y la 
+        /// Crea una cámara 3D con propiedades por defecto y la 
         /// añade al listado de objetos simulados
         /// </summary>
         /// <returns>La cámara creada</returns>
-        public static Camera CreateCamera()
+        public static Camera3D CreateCamera3D()
         {
-            Camera c = new Camera();
+            Camera3D c = new Camera3D();
             simulatedObjects.Add(c);
 
             return c;
@@ -365,9 +365,9 @@ namespace GemeloDigital
         /// </summary>
         /// <param name="obj">El objeto a convertir</param>
         /// <returns>El objeto convertido en una camara</returns>
-        public static Camera AsCamera(SimulatedObject obj)
+        public static Camera3D AsCamera3D(SimulatedObject obj)
         {
-            return (Camera)obj;
+            return (Camera3D)obj;
         }
 
         /// <summary>

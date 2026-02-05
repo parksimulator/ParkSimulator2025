@@ -184,7 +184,7 @@ namespace GemeloDigital
             p.Point2 = p2;
         }
 
-        static void AskCameraProperties(Camera c)
+        static void AskCamera3DProperties(Camera3D c)
         {
             Vector3 position;
             position.X = AskSingle("PosX");

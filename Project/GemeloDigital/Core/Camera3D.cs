@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GemeloDigital
 {
-    public class Camera : SimulatedObject
+    public class Camera3D : SimulatedObject
     {
         /// <summary>
         /// Posicion de la cámara
@@ -32,10 +32,10 @@ namespace GemeloDigital
         /// </summary>
         public float ZFar { get; set; }
 
-        internal Camera()
+        internal Camera3D()
         {
             Name = "Camera";
-            Type = SimulatedObjectType.Camera;
+            Type = SimulatedObjectType.Camera3D;
 
             FOV = 60;
             ZNear = 0.1f;
