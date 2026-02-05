@@ -21,7 +21,7 @@ namespace GemeloDigital
         /// Material del modelo
         /// </summary>
         public Material material;
-        public Mesh mesh;
+        public Model model;
 
         internal Object3D()
         {

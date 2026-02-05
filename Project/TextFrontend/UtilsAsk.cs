@@ -232,8 +232,8 @@ namespace GemeloDigital
             SimulatedObject obj = PickObjectOrNull("Material", "Materials", SimulatedObjectType.Material);
             m.material = SimulatorCore.AsMaterial(obj);
 
-            obj = PickObjectOrNull("Mesh", "Meshes", SimulatedObjectType.Mesh);
-            m.mesh = SimulatorCore.AsMesh(obj);
+            obj = PickObjectOrNull("Model", "Models", SimulatedObjectType.Model);
+            m.model = SimulatorCore.AsModel(obj);
         }
 
         static void AskMaterialProperties(Material m)
@@ -252,7 +252,7 @@ namespace GemeloDigital
             m.Texture = SimulatorCore.AsTexture(obj);
         }
 
-        static void AskMeshProperties(Mesh m)
+        static void AskModelProperties(Model m)
         {
             m.ResourceId = AskString("Identificador de recurso");
         }

@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace GemeloDigital
 {
-    public class Mesh : SimulatedObject
+    public class Model : SimulatedObject
     {
         /// <summary>
         /// Ruta de la malla
         /// </summary>
         public string ResourceId { get; set; }
 
-        internal Mesh()
+        internal Model()
         {
             Name = "Mesh";
-            Type = SimulatedObjectType.Mesh;
+            Type = SimulatedObjectType.Model;
         }
 
     }

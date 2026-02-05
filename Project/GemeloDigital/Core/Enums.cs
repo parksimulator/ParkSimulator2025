@@ -22,7 +22,7 @@ namespace GemeloDigital
         Material,
         Texture,
         Shader,
-        Mesh
+        Model
     }
 
     /// <summary>

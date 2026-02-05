@@ -239,13 +239,13 @@ namespace GemeloDigital
         }
 
         /// <summary>
-        /// Crea una malla con propiedades por defecto y la 
+        /// Crea un modelo con propiedades por defecto y la 
         /// añade al listado de objetos simulados
         /// </summary>
-        /// <returns>La malla creada</returns>
-        public static Mesh CreateMesh()
+        /// <returns>El modelo creado</returns>
+        public static Model CreateModel()
         {
-            Mesh m = new Mesh();
+            Model m = new Model();
             simulatedObjects.Add(m);
 
             return m;
@@ -405,9 +405,9 @@ namespace GemeloDigital
         /// </summary>
         /// <param name="obj">El objeto a convertir</param>
         /// <returns>El objeto convertido en una malla</returns>
-        public static Mesh AsMesh(SimulatedObject obj)
+        public static Model AsModel(SimulatedObject obj)
         {
-            return (Mesh)obj;
+            return (Model)obj;
         }
 
         /// <summary>
