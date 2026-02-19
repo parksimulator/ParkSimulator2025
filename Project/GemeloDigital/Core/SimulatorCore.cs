@@ -50,7 +50,7 @@ namespace GemeloDigital
 
             state = SimulatorState.Stopped;
 
-            storage = new Cargarguardar();
+            storage = new BinaryFileStorage();
             render = new GLRender();
             resources = new FileResources();
 
@@ -581,6 +581,54 @@ namespace GemeloDigital
             p.Id = id;
 
             return p;
+        }
+
+        internal static Texture CreateTextureWithId(string id)
+        {
+            Texture t = CreateTexture();
+            t.Id = id;
+
+            return t;
+        }
+
+        internal static Shader CreateShaderWithId(string id)
+        {
+            Shader s = CreateShader();
+            s.Id = id;
+
+            return s;
+        }
+
+        internal static Material CreateMaterialWithId(string id)
+        {
+            Material m = CreateMaterial();
+            m.Id = id;
+
+            return m;
+        }
+
+        internal static Model CreateModelWithId(string id)
+        {
+            Model m = CreateModel();
+            m.Id = id;
+
+            return m;
+        }
+
+        internal static Object3D CreateObject3DWithId(string id)
+        {
+            Object3D o = CreateObject3D();
+            o.Id = id;
+
+            return o;
+        }
+
+        internal static Camera3D CreateCamera3DWithId(string id)
+        {
+            Camera3D c = CreateCamera3D();
+            c.Id = id;
+
+            return c;
         }
 
         internal static bool ExistsResource(string resourceId)

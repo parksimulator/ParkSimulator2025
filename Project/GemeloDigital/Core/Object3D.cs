@@ -20,8 +20,8 @@ namespace GemeloDigital
         /// <summary>
         /// Material del modelo
         /// </summary>
-        public Material material;
-        public Model model;
+        public Material Material { get; set; }
+        public Model Model { get; set; }
 
         internal Object3D()
         {

@@ -230,10 +230,10 @@ namespace GemeloDigital
             m.Scale = rotation;
 
             SimulatedObject obj = PickObjectOrNull("Material", "Materials", SimulatedObjectType.Material);
-            m.material = SimulatorCore.AsMaterial(obj);
+            m.Material = SimulatorCore.AsMaterial(obj);
 
             obj = PickObjectOrNull("Model", "Models", SimulatedObjectType.Model);
-            m.model = SimulatorCore.AsModel(obj);
+            m.Model = SimulatorCore.AsModel(obj);
         }
 
         static void AskMaterialProperties(Material m)

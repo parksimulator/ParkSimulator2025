@@ -119,12 +119,12 @@ namespace GemeloDigital
             {
                 Object3D object3D = SimulatorCore.AsObject3D(o);
 
-                if(object3D.material == null || object3D.model == null) { continue; }
-                if(object3D.material.Shader == null || object3D.material.Texture == null) { continue; }
+                if(object3D.Material == null || object3D.Model == null) { continue; }
+                if(object3D.Material.Shader == null || object3D.Material.Texture == null) { continue; }
 
-                GLTexture texture = GetOrLoadTexture(object3D.material.Texture.ResourceId);
-                GLShader shader = GetOrLoadShader(object3D.material.Shader.ResourceId);
-                GLModel model = GetOrLoadModel(object3D.model.ResourceId);
+                GLTexture texture = GetOrLoadTexture(object3D.Material.Texture.ResourceId);
+                GLShader shader = GetOrLoadShader(object3D.Material.Shader.ResourceId);
+                GLModel model = GetOrLoadModel(object3D.Model.ResourceId);
 
                 if(texture == null || shader == null || model == null) { continue; }
 

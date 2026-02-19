@@ -58,6 +58,61 @@ namespace GemeloDigital
                         s += ": Punto1 " + ObjectReferenceToString(p.Point1);
                         s += ": Punto2 " + ObjectReferenceToString(p.Point2);
                     }
+                    else if(obj.Type == SimulatedObjectType.Texture)
+                    {
+                        Texture t = SimulatorCore.AsTexture(obj);
+
+                        s += ": IdRecurso " + t.ResourceId;
+                    }
+                    else if(obj.Type == SimulatedObjectType.Shader)
+                    {
+                        Shader shader = SimulatorCore.AsShader(obj);
+
+                        s += ": IdRecurso " + shader.ResourceId;
+                    }
+                    else if(obj.Type == SimulatedObjectType.Material)
+                    {
+                        Material m= SimulatorCore.AsMaterial(obj);
+
+                        s += ": Color (" + m.Color.X + ", " + m.Color.Y + ", "  + m.Color.Z + ")";
+
+                        s += ": Textura " + ObjectReferenceToString(m.Texture);
+                        s += ": Shader " + ObjectReferenceToString(m.Shader);
+                    }
+                    else if(obj.Type == SimulatedObjectType.Shader)
+                    {
+                        Model m = SimulatorCore.AsModel(obj);
+
+                        s += ": IdRecurso " + m.ResourceId;
+                    }
+                    else if(obj.Type == SimulatedObjectType.Model)
+                    {
+                        Model m = SimulatorCore.AsModel(obj);
+
+                        s += ": IdRecurso " + m.ResourceId;
+                    }
+                    else if(obj.Type == SimulatedObjectType.Object3D)
+                    {
+                        Object3D o3D= SimulatorCore.AsObject3D(obj);
+
+                        s += ": Posición (" + o3D.Position.X + ", " + o3D.Position.Y + ", "  + o3D.Position.Z + ")";
+                        s += ": Rotación (" + o3D.Rotation.X + ", " + o3D.Rotation.Y + ", "  + o3D.Rotation.Z + ")";
+                        s += ": Escala (" + o3D.Scale.X + ", " + o3D.Scale.Y + ", "  + o3D.Scale.Z + ")";
+
+                        s += ": Material " + ObjectReferenceToString(o3D.Material);
+                        s += ": Model " + ObjectReferenceToString(o3D.Model);
+                    }
+                    else if(obj.Type == SimulatedObjectType.Camera3D)
+                    {
+                        Camera3D c3D= SimulatorCore.AsCamera3D(obj);
+
+                        s += ": Posición (" + c3D.Position.X + ", " + c3D.Position.Y + ", "  + c3D.Position.Z + ")";
+                        s += ": Rotación (" + c3D.Rotation.X + ", " + c3D.Rotation.Y + ", "  + c3D.Rotation.Z + ")";
+
+                        s += ": FOV " + (c3D.FOV);
+                        s += ": ZNear " + (c3D.ZNear);
+                        s += ": ZFar" + (c3D.ZFar);
+                    }
                 }
             }
 
