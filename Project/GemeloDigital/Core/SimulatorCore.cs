@@ -29,15 +29,20 @@ namespace GemeloDigital
         /// </summary>
         public static float Time { get { return steps * Constants.hoursPerStep; } }
 
+        internal static object SceneLock  { get { return sceneLock; } }
+
         const string version = "6";
         static SimulatorState state;
         static int steps;
 
         static List<SimulatedObject> simulatedObjects;
 
+        static object sceneLock = new object();
+
         static Storage storage;
         static Render render;
         static Resources resources;
+        static Simulation simulation;
 
         /// <summary>
         /// Inicia el simulador. Debe llamarse
@@ -53,10 +58,12 @@ namespace GemeloDigital
             storage = new BinaryFileStorage();
             render = new GLRender();
             resources = new FileResources();
+            simulation = new DummySimulation();
 
             resources.Initialize();
             storage.Initialize();
             render.Initialize();
+            simulation.Initialize();
         }
 
         /// <summary>
@@ -67,10 +74,7 @@ namespace GemeloDigital
         {
             steps = 0;
 
-            for(int i = 0; i< simulatedObjects.Count; i++)
-            {
-                simulatedObjects[i].Start();
-            }
+            simulation.Start();
 
             state = SimulatorState.Running;
         }
@@ -81,11 +85,7 @@ namespace GemeloDigital
         /// </summary>
         public static void Step()
         {
-
-            for (int i = 0; i < simulatedObjects.Count; i++)
-            {
-                simulatedObjects[i].Step();
-            }
+            simulation.Step();
 
             steps++;
         }
@@ -96,10 +96,7 @@ namespace GemeloDigital
         /// </summary>
         public static void Stop()
         {
-            for (int i = 0; i < simulatedObjects.Count; i++)
-            {
-                simulatedObjects[i].Stop();
-            }
+            simulation.Stop();
 
             state = SimulatorState.Stopped;
         }
@@ -111,6 +108,7 @@ namespace GemeloDigital
         /// </summary>
         public static void Finish()
         {
+            simulation.Finish();
             render.Finish();
             storage.Finish();
             resources.Finish();

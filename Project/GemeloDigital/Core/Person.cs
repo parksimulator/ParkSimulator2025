@@ -45,18 +45,6 @@ namespace GemeloDigital
             Type = SimulatedObjectType.Person;
         }
 
-        internal override void Start()
-        {
-        }
-
-        internal override void Step()
-        {
-        }
-
-        internal override void Stop()
-        {
-        }
-
         internal override void StartKPIRecording(string name)
         {
             base.StartKPIRecording(name);

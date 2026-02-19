@@ -79,82 +79,85 @@ namespace GemeloDigital
             context.ClearColor(clearColor.X / 255.0f, clearColor.Y / 255.0f, clearColor.Z / 255.0f, clearColor.W / 255.0f);
             context.Clear((uint)(AttribMask.ColorBufferBit | AttribMask.DepthBufferBit));
 
-            List<SimulatedObject> objs = SimulatorCore.FindObjectsOfType(SimulatedObjectType.Camera3D);
-
-            if(objs.Count <= 0) { return; }
-
-            camera = SimulatorCore.AsCamera3D(objs[0]);
-
-            Vector3 cameraPos = camera.Position;
-            Vector3 cameraRot = DegreesToRadians(camera.Rotation);
-            float cameraFov = DegreesToRadians(camera.FOV);
-            float zNear = camera.ZNear;
-            float zFar = camera.ZFar;
-
-            float zRads = DegreesToRadians(0);
-            float yRads = DegreesToRadians(180);
-            float xRads = DegreesToRadians(0);
-
-            float fovRads = DegreesToRadians(45);
-
-            Vector2D<int> size = window.FramebufferSize;
-
-            Matrix4x4 viewInverted = Matrix4x4.CreateTranslation(cameraPos) *
-                         Matrix4x4.CreateRotationZ(cameraRot.Z) *
-                         Matrix4x4.CreateRotationY(cameraRot.Y) *
-                         Matrix4x4.CreateRotationX(cameraRot.X);
-
-            Matrix4x4 viewMatrix;
-            Matrix4x4.Invert(viewInverted, out viewMatrix);
-
-            projectionMatrix = Matrix4x4.CreatePerspectiveFieldOfView(fovRads, (float)size.X / size.Y, zNear, zFar);
-
-            context.Disable(GLEnum.Blend);
-            context.Disable(GLEnum.PolygonOffsetFill);
-            context.DepthMask(true);
-
-            objs = SimulatorCore.FindObjectsOfType(SimulatedObjectType.Object3D);
-
-            foreach(SimulatedObject o in objs)
+            lock(SimulatorCore.SceneLock)
             {
-                Object3D object3D = SimulatorCore.AsObject3D(o);
 
-                if(object3D.Material == null || object3D.Model == null) { continue; }
-                if(object3D.Material.Shader == null || object3D.Material.Texture == null) { continue; }
+                List<SimulatedObject> objs = SimulatorCore.FindObjectsOfType(SimulatedObjectType.Camera3D);
 
-                GLTexture texture = GetOrLoadTexture(object3D.Material.Texture.ResourceId);
-                GLShader shader = GetOrLoadShader(object3D.Material.Shader.ResourceId);
-                GLModel model = GetOrLoadModel(object3D.Model.ResourceId);
+                if(objs.Count <= 0) { return; }
 
-                if(texture == null || shader == null || model == null) { continue; }
+                camera = SimulatorCore.AsCamera3D(objs[0]);
 
-                texture.Bind();
-                shader.Use();
-                shader.SetUniform("uTexture0", 0);
-                shader.SetUniform("uView", viewMatrix);
-                shader.SetUniform("uProjection", projectionMatrix);
+                Vector3 cameraPos = camera.Position;
+                Vector3 cameraRot = DegreesToRadians(camera.Rotation);
+                float cameraFov = DegreesToRadians(camera.FOV);
+                float zNear = camera.ZNear;
+                float zFar = camera.ZFar;
 
-                Vector3 objPos = object3D.Position;
-                Vector3 objRot = DegreesToRadians(object3D.Rotation);
-                Vector3 objScale = object3D.Scale;
+                float zRads = DegreesToRadians(0);
+                float yRads = DegreesToRadians(180);
+                float xRads = DegreesToRadians(0);
 
-                var modelMatrix = Matrix4x4.CreateTranslation(objPos) *
-                         Matrix4x4.CreateRotationZ(objRot.Z) *
-                         Matrix4x4.CreateRotationY(objRot.Y) *
-                         Matrix4x4.CreateRotationX(objRot.X);
+                float fovRads = DegreesToRadians(45);
 
-                int c = model.meshes.Count;
-                for (int i = 0; i < c; i++)
+                Vector2D<int> size = window.FramebufferSize;
+
+                Matrix4x4 viewInverted = Matrix4x4.CreateTranslation(cameraPos) *
+                             Matrix4x4.CreateRotationZ(cameraRot.Z) *
+                             Matrix4x4.CreateRotationY(cameraRot.Y) *
+                             Matrix4x4.CreateRotationX(cameraRot.X);
+
+                Matrix4x4 viewMatrix;
+                Matrix4x4.Invert(viewInverted, out viewMatrix);
+
+                projectionMatrix = Matrix4x4.CreatePerspectiveFieldOfView(fovRads, (float)size.X / size.Y, zNear, zFar);
+
+                context.Disable(GLEnum.Blend);
+                context.Disable(GLEnum.PolygonOffsetFill);
+                context.DepthMask(true);
+
+                objs = SimulatorCore.FindObjectsOfType(SimulatedObjectType.Object3D);
+
+                foreach(SimulatedObject o in objs)
                 {
-                    GLMesh m = model.meshes[i];
-                    m.Bind();
-                    shader.SetUniform("uModel", modelMatrix);
+                    Object3D object3D = SimulatorCore.AsObject3D(o);
 
-                    context.DrawArrays(PrimitiveType.Triangles, 0, (uint)m.vertices.Length);
+                    if(object3D.Material == null || object3D.Model == null) { continue; }
+                    if(object3D.Material.Shader == null || object3D.Material.Texture == null) { continue; }
+
+                    GLTexture texture = GetOrLoadTexture(object3D.Material.Texture.ResourceId);
+                    GLShader shader = GetOrLoadShader(object3D.Material.Shader.ResourceId);
+                    GLModel model = GetOrLoadModel(object3D.Model.ResourceId);
+
+                    if(texture == null || shader == null || model == null) { continue; }
+
+                    texture.Bind();
+                    shader.Use();
+                    shader.SetUniform("uTexture0", 0);
+                    shader.SetUniform("uView", viewMatrix);
+                    shader.SetUniform("uProjection", projectionMatrix);
+
+                    Vector3 objPos = object3D.Position;
+                    Vector3 objRot = DegreesToRadians(object3D.Rotation);
+                    Vector3 objScale = object3D.Scale;
+
+                    var modelMatrix = Matrix4x4.CreateTranslation(objPos) *
+                             Matrix4x4.CreateRotationZ(objRot.Z) *
+                             Matrix4x4.CreateRotationY(objRot.Y) *
+                             Matrix4x4.CreateRotationX(objRot.X);
+
+                    int c = model.meshes.Count;
+                    for (int i = 0; i < c; i++)
+                    {
+                        GLMesh m = model.meshes[i];
+                        m.Bind();
+                        shader.SetUniform("uModel", modelMatrix);
+
+                        context.DrawArrays(PrimitiveType.Triangles, 0, (uint)m.vertices.Length);
+                    }
                 }
+
             }
-
-
         }
 
         void OnLoad()

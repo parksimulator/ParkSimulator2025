@@ -113,4 +113,19 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Simulation\Group01\" />
+    <Folder Include="Services\Simulation\Group02\" />
+    <Folder Include="Services\Simulation\Group03\" />
+    <Folder Include="Services\Simulation\Group04\" />
+    <Folder Include="Services\Simulation\Group05\" />
+    <Folder Include="Services\Simulation\Group06\" />
+    <Folder Include="Services\Simulation\Group07\" />
+    <Folder Include="Services\Simulation\Group08\" />
+    <Folder Include="Services\Simulation\Group09\" />
+    <Folder Include="Services\Simulation\Group10\" />
+    <Folder Include="Services\Simulation\Group11\" />
+    <Folder Include="Services\Simulation\Group12\" />
+  </ItemGroup>
+
 </Project>

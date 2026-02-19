@@ -26,8 +26,6 @@ namespace GemeloDigital
         List<Point> entrances;
         List<Point> exits;
 
-        float powerConsumedTotal;
-
         internal Facility(Point entrance, Point exit)
         {
             Name = "Facility";
@@ -40,31 +38,9 @@ namespace GemeloDigital
             exits.Add(exit);
         }
 
-        internal override void Start()
-        {
-            powerConsumedTotal = 0;
-
-        }
-
-        internal override void Step()
-        {
-            powerConsumedTotal += PowerConsumed * Constants.hoursPerStep;
-        }
-
-        internal override void Stop()
-        {
-        }
-
         internal override float GetKPI(string kpi)
         {
-            if (kpi == Constants.kpiNameEnergy)
-            {
-                return powerConsumedTotal;
-            }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
 
         internal override void StartKPIRecording(string name)

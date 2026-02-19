@@ -31,21 +31,6 @@ namespace GemeloDigital
             Id = Guid.NewGuid().ToString();
         }
 
-        internal virtual void Start()
-        {
-            // Nothing to do
-        }
-
-        internal virtual void Step()
-        {
-            // Nothing to do
-        }
-
-        internal virtual void Stop()
-        {
-            // Nothing to do
-        }
-
         internal virtual float GetKPI(string kpi)
         {
             return 0;
