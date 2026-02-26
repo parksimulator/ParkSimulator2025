@@ -58,7 +58,7 @@ namespace GemeloDigital
             storage = new BinaryFileStorage();
             render = new GLRender();
             resources = new FileResources();
-            simulation = new DummySimulation();
+            simulation = new SimulationGroup5();
 
             resources.Initialize();
             storage.Initialize();
